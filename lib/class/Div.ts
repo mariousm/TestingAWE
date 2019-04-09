@@ -12,7 +12,7 @@ export class Div extends Root{
     // MÉTODOS
 
     // Método para obtener el número de elementos
-    async getCount(selector ?: string) {
+    async getCount(selector : string) {
         if (selector.length !== 0) {
             return await this.getClient().elements(selector).then((res) => {
                 return res.value.length;

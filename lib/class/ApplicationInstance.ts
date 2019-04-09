@@ -7,7 +7,7 @@ export class ApplicationInstance {
 
     // ATRIBUTOS
     private app: Application;
-    private client : SpectronClient;
+    private client !: SpectronClient;
 
     // CONSTRUCTOR
     private constructor() {
