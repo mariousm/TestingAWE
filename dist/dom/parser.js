@@ -86,7 +86,6 @@ function logicParser(path) {
     let list = [];
     let regExpr = new RegExp('\{\{[aA-zZ>]+\}\}'); // Expresión regular para determinar si un id es dinámico o no
     list = parser(path); // Obtenemos la etiqueta junto con su id
-    console.log(list);
     data = "import * as awe from \"testing-awe\";\n\n"; // Añadimos las importaciones
     for (let node of list) {
         if (regExpr.test(node[1])) {
@@ -103,10 +102,6 @@ function logicParser(path) {
             data += "export const " + node[1] + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
         }
     }
-    writeFile("C:\\Users\\mario\\Desktop\\PruebaTookit\\dashboard.toolkit.ts", data); //Escribimos el fichero
-    // TODO recorrer la lista y mirar si elemento es estático, llamar a un método para que escriba el código necesario
-    // si es un elemento dinámico, abstraer {{ lo que sea }} y generar un objeto parametrizado en el fichero intermedio,
-    // cuyo nombre el método sea el nombre del id sin el {{ lo que sea }}, cuyo parámetro sea un número, y dentro de ese
-    // método instanciar el objeto.
+    writeFile("B:\\WORKSPACE\\NODE-WORKSPACE\\TFG\\spectron-e2e\\tour-of-heroes-toolkit\\src\\app\\heroes\\heroes.toolkit.ts", data); //Escribimos el fichero
 }
 exports.logicParser = logicParser;

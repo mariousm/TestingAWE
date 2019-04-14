@@ -124,5 +124,5 @@ export function logicParser(path: string) {
             data += "export const " + node[1] + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
         }
     }
-    writeFile("C:\\Users\\mario\\Desktop\\PruebaTookit\\dashboard.toolkit.ts", data) //Escribimos el fichero
+    writeFile("B:\\WORKSPACE\\NODE-WORKSPACE\\TFG\\spectron-e2e\\tour-of-heroes-toolkit\\src\\app\\heroes\\heroes.toolkit.ts", data) //Escribimos el fichero
 }
