@@ -62,20 +62,102 @@ function nameTagClass(tag) {
 //          id: nombre del id del elemento
 // Salida:
 //          nameId: sustitución de la parte dinámica por param
+// function nameIdTag_INCIAL(id: string) : string {
+//     let nameId = "";
+//     if (id.startsWith("{{")) { // Si el id comienza por el elemento dinámico
+//         return "\'#\' + param + " + "\'" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'";
+//     } else if (id.endsWith("}}")) { // Si el id termina por el elemento dinámico
+//         return "\'#" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'" + " + param";
+//     }else {
+//         nameId = id.replace(/\{\{[aA-zZ>]+\}\}/g, "@");// Si estoy entre medias del id
+//         let firstPart : string = nameId.slice(0, nameId.indexOf("@"));
+//         let secondPart : string = nameId.slice(nameId.indexOf("@") + 1);
+//         return "\'#" + firstPart + "\' " + "+ param + " + "\'" + secondPart + "\'"
+//     }
+// }
+// Devuelve la cabecera de la signatura para los id dinámicos
+// Entrada:
+//          id: nombre del id del elemento
+// Salida:
+//          head: cabcera para los métodos de los id dinámicos
+function numberParamsIdTag(id) {
+    let head = "";
+    let numberOfParams = 1;
+    let esPrimeraLlave = false; // Variable que nos permite determinar si vamos a empezar a leer un id dinámico
+    for (let i = 0; i < id.length; ++i) {
+        if (esPrimeraLlave === false) {
+            if (id[i] === "{") { // Comprobamos la primera llave
+                esPrimeraLlave = true;
+                continue;
+            }
+            else if (id[i] === "}") { // Comprobamos la tercera llave
+                esPrimeraLlave = true;
+                continue;
+            }
+        }
+        if (esPrimeraLlave === true) {
+            if (id[i] === "{") { // Comprobamos la segunda llave
+                esPrimeraLlave = false;
+                continue;
+            }
+            else if (id[i] === "}") { // Comprobamos la cuarta llave
+                esPrimeraLlave = false;
+                head += "param" + numberOfParams.toString() + " : string, ";
+                ++numberOfParams;
+                continue;
+            }
+        }
+    }
+    return head.slice(0, head.length - 2); // Borramos el espacio y la última coma
+}
+// Devuelve el nombre del id, cuando el id sea dinámico
+// Entrada:
+//          id: nombre del id del elemento
+// Salida:
+//          nameId: sustitución de la parte dinámica por param
 function nameIdTag(id) {
-    let nameId = "";
-    if (id.startsWith("{{")) { // Si el id comienza por el elemento dinámico
-        return "\'#\' + param + " + "\'" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'";
+    let nameId = "\'#\'";
+    let param = 1; // Contador que nos sirve para escribir param1, param2... Dependiendo del número de parámtros que tiene el id
+    let esPrimeraLlave = false; // Variable que nos permite determinar si vamos a empezar a leer un id dinámico
+    let estadoIdDinamico = false; // Flag para cuando estamos dentro del id dinámico {{ here }}
+    let estado = true; // Flag cuando estamos fuera del id dinámico
+    let cadenaLeida = ''; // Cadena que leemos cuando estamos fuera del id dinámico, es decir, cuanto estado = true
+    for (let i = 0; i < id.length; ++i) {
+        if (esPrimeraLlave === false) {
+            if (id[i] === "{") { // Comprobamos la primera llave
+                esPrimeraLlave = true;
+                if (i !== 0) { // Ya que si está al comienzo del todo va a añadir un ''
+                    nameId += " + \'" + cadenaLeida + "\'"; // Cuando ya no estamos dentro del id dinámico, guardamos lo leído
+                    cadenaLeida = '';
+                }
+                continue;
+            }
+            else if (id[i] === "}") { // Comprobamos la tercera llave
+                esPrimeraLlave = true;
+                estadoIdDinamico = false;
+                continue;
+            }
+            if (estado === true) { // Guardamos la cadena que leemos cuando estamos fuera del id dinámico
+                cadenaLeida += id[i];
+            }
+        }
+        if (esPrimeraLlave === true) {
+            if (id[i] === "{") { // Comprobamos la segunda llave
+                esPrimeraLlave = false;
+                estadoIdDinamico = true;
+                estado = false;
+                continue;
+            }
+            else if (id[i] === "}") { // Comprobamos la cuarta llave
+                esPrimeraLlave = false;
+                estado = true;
+                nameId += " + param" + param.toString();
+                ++param;
+                continue;
+            }
+        }
     }
-    else if (id.endsWith("}}")) { // Si el id termina por el elemento dinámico
-        return "\'#" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'" + " + param";
-    }
-    else {
-        nameId = id.replace(/\{\{[aA-zZ>]+\}\}/g, "@"); // Si estoy entre medias del id
-        let firstPart = nameId.slice(0, nameId.indexOf("@"));
-        let secondPart = nameId.slice(nameId.indexOf("@") + 1);
-        return "\'#" + firstPart + "\' " + "+ param + " + "\'" + secondPart + "\'";
-    }
+    return nameId;
 }
 // Método que va a contener la lógica de los id dinámicos
 // Entrada:
@@ -92,7 +174,7 @@ function logicParser(path) {
             // Es un id dinámico
             let nameFunction = node[1].replace(/\{\{[aA-zZ>]+\}\}/g, "");
             let nameClass = nameTagClass(node[0]);
-            data += "export function " + nameFunction + "(param: string) : awe." + nameClass + " {\n";
+            data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
             data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
             data += "\treturn new awe." + nameClass + "(id)\n";
             data += "};\n";
@@ -102,6 +184,6 @@ function logicParser(path) {
             data += "export const " + node[1] + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
         }
     }
-    writeFile("B:\\WORKSPACE\\NODE-WORKSPACE\\TFG\\spectron-e2e\\tour-of-heroes-toolkit\\src\\app\\heroes\\heroes.toolkit.ts", data); //Escribimos el fichero
+    writeFile("C:\\Users\\mario\\Desktop\\pruieba\\heroes.toolkit.ts", data); //Escribimos el fichero
 }
 exports.logicParser = logicParser;
