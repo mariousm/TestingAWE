@@ -30,11 +30,14 @@ function htmlToString(path) {
 function parser(path) {
     let list = [];
     let html = "";
+    let regExpr = new RegExp('\\s+'); // The \s metacharacter is used to find a whitespace character.
     html = htmlToString(path);
     var parser = new htmlparser.Parser({
         onopentag: function (name, attribs) {
-            if (attribs.id !== undefined && attribs.id !== "") {
-                list.push([name.trim(), attribs.id.trim()]);
+            if (attribs.id !== undefined && attribs.id !== "") { // Comprobamos lo más básico, que tenga definido el id y que no esté vacío
+                if (!regExpr.test(attribs.id)) { // Si el id no tiene ningún espacio, es un id correcto según el estandar (vale todo a excepción de whitespace character)
+                    list.push([name.trim(), attribs.id.trim()]);
+                }
             }
         }
     }, { decodeEntities: true });
@@ -57,24 +60,31 @@ function nameTagClass(tag) {
     nameClass = nameClass[0].toUpperCase() + tag.slice(1);
     return nameClass;
 }
-// Devuelve el nombre del id, cuando el id sea dinámico
+// Devuelve el nombre de la variable o de la función sin caracteres especiales
 // Entrada:
 //          id: nombre del id del elemento
 // Salida:
-//          nameId: sustitución de la parte dinámica por param
-// function nameIdTag_INCIAL(id: string) : string {
-//     let nameId = "";
-//     if (id.startsWith("{{")) { // Si el id comienza por el elemento dinámico
-//         return "\'#\' + param + " + "\'" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'";
-//     } else if (id.endsWith("}}")) { // Si el id termina por el elemento dinámico
-//         return "\'#" + id.replace(/\{\{[aA-zZ>]+\}\}/g, "") + "\'" + " + param";
-//     }else {
-//         nameId = id.replace(/\{\{[aA-zZ>]+\}\}/g, "@");// Si estoy entre medias del id
-//         let firstPart : string = nameId.slice(0, nameId.indexOf("@"));
-//         let secondPart : string = nameId.slice(nameId.indexOf("@") + 1);
-//         return "\'#" + firstPart + "\' " + "+ param + " + "\'" + secondPart + "\'"
-//     }
-// }
+//          varFunc: nombre de la variable o de la función
+function nameVarFunc(id) {
+    let varFunc = "";
+    let esMayuscula = false; // Variable que se pone a true cuando leemos un caracter especial, nameHero0 en vez de name_hero_0
+    let regExpr = new RegExp('[a-zA-Z0-9]'); // Nos sirve para determinar si tiene algún caracter especial.
+    id = id.toLowerCase();
+    for (let i = 0; i < id.length; ++i) {
+        if (regExpr.test(id[i])) { // Es un caracter "normal", en el caso de que sea especial que no lo añada
+            let letraActual = id[i];
+            if (esMayuscula === true) {
+                letraActual = letraActual.toUpperCase();
+                esMayuscula = false;
+            }
+            varFunc += letraActual;
+        }
+        else {
+            esMayuscula = true;
+        }
+    }
+    return varFunc;
+}
 // Devuelve la cabecera de la signatura para los id dinámicos
 // Entrada:
 //          id: nombre del id del elemento
@@ -172,7 +182,7 @@ function logicParser(path) {
     for (let node of list) {
         if (regExpr.test(node[1])) {
             // Es un id dinámico
-            let nameFunction = node[1].replace(/\{\{[aA-zZ>]+\}\}/g, "");
+            let nameFunction = nameVarFunc(node[1].replace(/\{\{[aA-zZ>]+\}\}/g, ""));
             let nameClass = nameTagClass(node[0]);
             data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
             data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
@@ -181,9 +191,9 @@ function logicParser(path) {
         }
         else {
             // Es un id estático
-            data += "export const " + node[1] + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
+            data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
         }
     }
-    writeFile("C:\\Users\\mario\\Desktop\\pruieba\\heroes.toolkit.ts", data); //Escribimos el fichero
+    writeFile("B:\\WORKSPACE\\NODE-WORKSPACE\\TFG\\spectron-e2e\\tour-of-heroes-toolkit\\src\\app\\hero-detail\\hero-detail.toolkit.ts", data); //Escribimos el fichero
 }
 exports.logicParser = logicParser;
