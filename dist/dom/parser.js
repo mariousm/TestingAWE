@@ -169,15 +169,17 @@ function nameIdTag(id) {
     }
     return nameId;
 }
-// Método que va a contener la lógica de los id dinámicos
+// Método que va a contener la lógica de la generación de los ficheros
 // Entrada:
-//          path: fichero html a parsear
+//          htmlPath: fichero html a parsear
+//          outPath: ruta de salida para el fichero generado por la toolkit
 // Salida:
-function logicParser(path) {
+//          fichero awe.ts generado por la toolkit
+function logicParser(htmlPath, outPath) {
     let data = "";
     let list = [];
     let regExpr = new RegExp('\{\{[aA-zZ>]+\}\}'); // Expresión regular para determinar si un id es dinámico o no
-    list = parser(path); // Obtenemos la etiqueta junto con su id
+    list = parser(htmlPath); // Obtenemos la etiqueta junto con su id
     data = "import * as awe from \"testing-awe\";\n\n"; // Añadimos las importaciones
     for (let node of list) {
         if (regExpr.test(node[1])) {
@@ -194,6 +196,6 @@ function logicParser(path) {
             data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
         }
     }
-    writeFile("B:\\WORKSPACE\\NODE-WORKSPACE\\TFG\\spectron-e2e\\tour-of-heroes-toolkit\\src\\app\\hero-detail\\hero-detail.toolkit.ts", data); //Escribimos el fichero
+    writeFile(outPath, data); //Escribimos el fichero
 }
 exports.logicParser = logicParser;

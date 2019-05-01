@@ -29,6 +29,8 @@
         "typescript": "^3.2.4"
     },
     "dependencies": {
+        "@types/fs-extra": "^5.0.5",
+        "fs-extra": "^7.0.1",
         "webdriverio": "^4.13.0"
     }
 }
