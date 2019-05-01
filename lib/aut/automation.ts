@@ -2,7 +2,7 @@
 import * as fs from "fs";
 import * as fsExtra from "fs-extra";
 import * as path from "path";
-import { logicParser } from '../dom/parser';
+import { logicParser, createFileApplicationInstance } from '../parser/parser';
 
 
 // Método que va a recorrer la estructura src del proyecto Angular/Electron
@@ -53,7 +53,7 @@ function createDirectory(spectronPath: string) {
 function createFile(file: string, electronPath: string, spectronPath: string) {
 
     if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
-        let spectronPathDirectory = "";
+        let spectronPathDirectory = ""; // Ruta para la creación del fichero
         let indexLastSlashWindows = spectronPath.lastIndexOf("\\");
         let indexLastSlashUnix = spectronPath.lastIndexOf("/");
 
@@ -94,8 +94,9 @@ export function walkDir(appElectronPath: string, appSpectronPath: string) {
         if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
             if (dirFile.toLowerCase().trim() === "src") {
                 appSpectronPath = path.join(appSpectronPath, "testingAWE", dirFile); 
-                createDirectory(appSpectronPath);
-                walkDirSrc(electronOutPath, appSpectronPath);
+                createDirectory(appSpectronPath)
+                createFileApplicationInstance(appElectronPath, appSpectronPath) // Genere el fichero Aplication Instance
+                walkDirSrc(electronOutPath, appSpectronPath)
             }
         }
     });

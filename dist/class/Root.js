@@ -18,7 +18,7 @@ class Root {
     // MÉTODOS
     // Obtener el cliente de la aplicación
     getClient() {
-        return ApplicationInstance_1.ApplicationInstance.getInstance().getClient();
+        return ApplicationInstance_1.ApplicationInstance.getInstance(ApplicationInstance_1.ApplicationInstance.getNameProject()).getClient();
     }
     // Obtener el selector
     getSelector() {

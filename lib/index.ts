@@ -9,7 +9,7 @@ export { Span } from './class/Span';
 export { Ul } from './class/Ul';
 
 // dom
-export { logicParser } from './dom/parser';
+export { logicParser } from './parser/parser';
 
 // automation
 export { walkDir } from './aut/automation'

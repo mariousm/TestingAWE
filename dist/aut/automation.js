@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const fsExtra = require("fs-extra");
 const path = require("path");
-const parser_1 = require("../dom/parser");
+const parser_1 = require("../parser/parser");
 // Método que va a recorrer la estructura src del proyecto Angular/Electron
 // Entrada:
 //          appElectronPath: ruta del proyecto Angular/Electron
@@ -47,7 +47,7 @@ function createDirectory(spectronPath) {
 //          generación del fichero
 function createFile(file, electronPath, spectronPath) {
     if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
-        let spectronPathDirectory = "";
+        let spectronPathDirectory = ""; // Ruta para la creación del fichero
         let indexLastSlashWindows = spectronPath.lastIndexOf("\\");
         let indexLastSlashUnix = spectronPath.lastIndexOf("/");
         if (process.platform === "win32") { // Si estamos en Windows
@@ -81,6 +81,7 @@ function walkDir(appElectronPath, appSpectronPath) {
             if (dirFile.toLowerCase().trim() === "src") {
                 appSpectronPath = path.join(appSpectronPath, "testingAWE", dirFile);
                 createDirectory(appSpectronPath);
+                parser_1.createFileApplicationInstance(appElectronPath, appSpectronPath); // Genere el fichero Aplication Instance
                 walkDirSrc(electronOutPath, appSpectronPath);
             }
         }
