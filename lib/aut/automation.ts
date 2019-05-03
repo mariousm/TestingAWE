@@ -53,9 +53,10 @@ function createDirectory(spectronPath: string) {
 function createFile(file: string, electronPath: string, spectronPath: string) {
 
     if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
-        let spectronPathDirectory = ""; // Ruta para la creación del fichero
-        let indexLastSlashWindows = spectronPath.lastIndexOf("\\");
-        let indexLastSlashUnix = spectronPath.lastIndexOf("/");
+        let spectronPathDirectory: string = ""; // Ruta para la creación del fichero
+        let htmlElements: Array<string> = getHtmlElements() // Todos los elementos html que soporta la librería
+        let indexLastSlashWindows: number = spectronPath.lastIndexOf("\\");
+        let indexLastSlashUnix: number = spectronPath.lastIndexOf("/");
 
         if (process.platform === "win32") { // Si estamos en Windows
             // Para cambiar el nombre y la extensión del  fichero generado
@@ -74,7 +75,7 @@ function createFile(file: string, electronPath: string, spectronPath: string) {
             fs.unlinkSync(spectronPath);
         }
 
-        logicParser(electronPath, spectronPath) // logicParser genera los ficheros
+        logicParser(electronPath, spectronPath, htmlElements) // logicParser genera los ficheros
     }
 }
 
@@ -241,6 +242,37 @@ function pathUnixWindows(path: string): string {
         }
     }
     return pathUnixWindows
+}
+
+// Método que devuelve en una lista, los elementos HTML de la librería que están creados
+// Entrada:
+//
+// Salida:
+//          htmlElements: lista que contiene los elementos HTML de la librería que están creados
+function getHtmlElements(): Array<string> {
+
+    let htmlElements: Array<string> = new Array<string>();
+    let libreryPath: string = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
+    let dirFilePath: string; // Ruta para saber si es un archivo o un directorio
+    let file : string; // Nombre de la clase
+
+    if (checkExistDirectory(libreryPath)) {
+        fs.readdirSync(libreryPath).forEach(dirFile => {
+
+            dirFilePath = path.join(libreryPath, dirFile);
+
+            if (fs.statSync(dirFilePath).isFile()) { // Si es un archivo
+                file = dirFile.slice(0, dirFile.indexOf("."));
+
+                if (!htmlElements.includes(file)) {
+                    htmlElements.push(file);
+                }
+
+            }
+        });
+    }
+
+    return htmlElements
 }
 
 // Método que va a recorrer la estructura principal del proyecto Angular/Electron

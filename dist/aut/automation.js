@@ -48,6 +48,7 @@ function createDirectory(spectronPath) {
 function createFile(file, electronPath, spectronPath) {
     if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
         let spectronPathDirectory = ""; // Ruta para la creación del fichero
+        let htmlElements = getHtmlElements(); // Todos los elementos html que soporta la librería
         let indexLastSlashWindows = spectronPath.lastIndexOf("\\");
         let indexLastSlashUnix = spectronPath.lastIndexOf("/");
         if (process.platform === "win32") { // Si estamos en Windows
@@ -64,7 +65,7 @@ function createFile(file, electronPath, spectronPath) {
         if (fs.existsSync(spectronPath)) { // Si exite el fichero lo borramos, de lo contrario da Error
             fs.unlinkSync(spectronPath);
         }
-        parser_1.logicParser(electronPath, spectronPath); // logicParser genera los ficheros
+        parser_1.logicParser(electronPath, spectronPath, htmlElements); // logicParser genera los ficheros
     }
 }
 // Método que nos permite determinar si la ruta de la aplicación electron
@@ -210,6 +211,29 @@ function pathUnixWindows(path) {
     }
     return pathUnixWindows;
 }
+// Método que devuelve en una lista, los elementos HTML de la librería que están creados
+// Entrada:
+//
+// Salida:
+//          htmlElements: lista que contiene los elementos HTML de la librería que están creados
+function getHtmlElements() {
+    let htmlElements = new Array();
+    let libreryPath = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
+    let dirFilePath; // Ruta para saber si es un archivo o un directorio
+    let file; // Nombre de la clase
+    if (checkExistDirectory(libreryPath)) {
+        fs.readdirSync(libreryPath).forEach(dirFile => {
+            dirFilePath = path.join(libreryPath, dirFile);
+            if (fs.statSync(dirFilePath).isFile()) { // Si es un archivo
+                file = dirFile.slice(0, dirFile.indexOf("."));
+                if (!htmlElements.includes(file)) {
+                    htmlElements.push(file);
+                }
+            }
+        });
+    }
+    return htmlElements;
+}
 // Método que va a recorrer la estructura principal del proyecto Angular/Electron
 // para detectar si es un proyecto Electron y si tiene la carpeta src
 // Entrada:
@@ -218,6 +242,7 @@ function pathUnixWindows(path) {
 // Salida:
 //          Creación de toda la estructura de carpeta src con los fichero generados
 function walkDir(appElectronPath, appSpectronPath) {
+    // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos
     appElectronPath = pathUnixWindows(appElectronPath);
     appSpectronPath = pathUnixWindows(appSpectronPath);
     if (check(appElectronPath, appSpectronPath)) { // Si todas las validaciones son correctas

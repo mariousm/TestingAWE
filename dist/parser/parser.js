@@ -189,9 +189,10 @@ exports.createFileApplicationInstance = createFileApplicationInstance;
 // Entrada:
 //          htmlPath: fichero html a parsear
 //          outPath: ruta de salida para el fichero generado por la toolkit
+//          htmlElements: elementos HTML que están soportados por la librería
 // Salida:
 //          fichero awe.ts generado por la toolkit
-function logicParser(htmlPath, outPath) {
+function logicParser(htmlPath, outPath, htmlElements) {
     let data = "";
     let list = [];
     let regExpr = new RegExp('\{\{[aA-zZ>]+\}\}'); // Expresión regular para determinar si un id es dinámico o no
@@ -202,14 +203,19 @@ function logicParser(htmlPath, outPath) {
             // Es un id dinámico
             let nameFunction = nameVarFunc(node[1].replace(/\{\{[aA-zZ>]+\}\}/g, ""));
             let nameClass = nameTagClass(node[0]);
-            data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
-            data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
-            data += "\treturn new awe." + nameClass + "(id)\n";
-            data += "};\n";
+            if (htmlElements.includes(nameClass)) { // Si el elemento HTML está soportado por la librería
+                data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
+                data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
+                data += "\treturn new awe." + nameClass + "(id)\n";
+                data += "};\n";
+            }
         }
         else {
             // Es un id estático
-            data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
+            let nameClass = nameTagClass(node[0]);
+            if (htmlElements.includes(nameClass)) { // Si el elemento HTML está soportado por la librería
+                data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameClass + "('#" + node[1] + "');\n";
+            }
         }
     }
     writeFile(outPath, data); //Escribimos el fichero

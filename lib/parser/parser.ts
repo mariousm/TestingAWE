@@ -220,9 +220,10 @@ export function createFileApplicationInstance(appElectronPath: string, outPath: 
 // Entrada:
 //          htmlPath: fichero html a parsear
 //          outPath: ruta de salida para el fichero generado por la toolkit
+//          htmlElements: elementos HTML que están soportados por la librería
 // Salida:
 //          fichero awe.ts generado por la toolkit
-export function logicParser(htmlPath: string, outPath: string) {
+export function logicParser(htmlPath: string, outPath: string, htmlElements: Array<string>) {
 
     let data: string = "";
     let list: Array<Array<string>> = [];
@@ -235,15 +236,22 @@ export function logicParser(htmlPath: string, outPath: string) {
         if (regExpr.test(node[1])) {
             // Es un id dinámico
             let nameFunction: string = nameVarFunc(node[1].replace(/\{\{[aA-zZ>]+\}\}/g, ""));
-            let nameClass: string = nameTagClass(node[0])
-            data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
-            data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
-            data += "\treturn new awe." + nameClass + "(id)\n";
-            data += "};\n";
+            let nameClass: string = nameTagClass(node[0]);
+
+            if (htmlElements.includes(nameClass)) { // Si el elemento HTML está soportado por la librería
+                data += "export function " + nameFunction + "(" + numberParamsIdTag(node[1]) + ") : awe." + nameClass + " {\n";
+                data += "\tlet id : string = " + nameIdTag(node[1]) + ";\n";
+                data += "\treturn new awe." + nameClass + "(id)\n";
+                data += "};\n";
+            }
 
         } else {
             // Es un id estático
-            data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameTagClass(node[0]) + "('#" + node[1] + "');\n";
+            let nameClass: string = nameTagClass(node[0]);
+
+            if (htmlElements.includes(nameClass)) { // Si el elemento HTML está soportado por la librería
+                data += "export const " + nameVarFunc(node[1]) + " = " + "new awe." + nameClass + "('#" + node[1] + "');\n";
+            }
         }
     }
     writeFile(outPath, data) //Escribimos el fichero
