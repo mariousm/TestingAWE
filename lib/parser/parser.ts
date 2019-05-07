@@ -19,7 +19,7 @@ function writeFile(path: string, data: string) {
 // Entrada:
 //          path: fichero html a parsear
 // Salida:
-//          string: html sin espacios
+//          toReturn: html sin espacios
 function htmlToString(path: string): string {
 
     let toReturn: string = '';

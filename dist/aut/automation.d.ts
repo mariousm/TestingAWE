@@ -1,1 +1,1 @@
-export declare function walkDir(appElectronPath: string, appSpectronPath: string): void;
+export declare function walkDir(): void;

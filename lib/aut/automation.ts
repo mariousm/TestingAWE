@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as fsExtra from "fs-extra";
 import * as path from "path";
 import { logicParser, createFileApplicationInstance } from '../parser/parser';
+import { checkAweconfig, getProjectPath, getIgnore } from '../config/configuration';
 
 
 // Método que va a recorrer la estructura src del proyecto Angular/Electron
@@ -30,6 +31,7 @@ function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
 };
 
 // Método que crea el directorio de forma paralela desde el proyecto Angular/Electron al proyecto Spectron
+// USADO SOLO PARA LA CREACIÓN DE LA CARPETA testingAWE en el proyecto Spectron
 // Entrada:
 //          spectronPath: ruta del proyecto Spectron
 // Salida:
@@ -38,7 +40,7 @@ function createDirectory(spectronPath: string) {
 
     if (fs.existsSync(spectronPath)) { // Si exite el directorio lo borramos, ya que de lo contrario da Error
         fsExtra.emptyDirSync(spectronPath); // Borra todo lo que haya dentro menos el propio directorio
-        fs.rmdirSync(spectronPath); // Borra el directorio, una vez que hemos borrado todo lo que hay dentro
+        // fs.rmdirSync(spectronPath); // Borra el directorio, una vez que hemos borrado todo lo que hay dentro
     }
     fsExtra.ensureDirSync(spectronPath) // Resolvemos el appSpectronPath con el path relativo para crear el directorio
 }
@@ -99,8 +101,6 @@ function checkAppElectronPath(appElectronPath: string): boolean {
             if (dirFile.toLowerCase().trim() === "src")++validations; // Estamos en la raíz del proyecto
 
         } else { // Si es un archivo
-            // if (dirFile.toLowerCase().trim() === "angular.json") ++validations; // Comprobación de que es un proyecto Angular
-            // if (dirFile.toLowerCase().trim() === ("main.js" || "main.ts")) ++validations; // Comprobación de que es un proyecto Electron
             if (dirFile.toLowerCase().trim() === "package.json")++validations; // Es un proyecto que usa npm
         }
 
@@ -190,26 +190,26 @@ function check(appElectronPath: string, appSpectronPath: string): boolean {
 
             if (!checkAppElectronPath(appElectronPath)) { // Comprobamos que el proyecto Electron es válido
                 isCheck = false;
-                console.error("Compruebe que es un proyecto válido");
+                console.error("ERROR: compruebe que es un proyecto válido");
             }
 
             if (!checkAppSpectronPath(appSpectronPath)) { // Comprobamos que el proyecto Spectron es válido
                 isCheck = false;
-                console.error("Compruebe que es un proyecto válido");
+                console.error("ERROR: compruebe que es un proyecto válido");
             }
 
             if (!checkSameRoot(appElectronPath, appSpectronPath)) { // Comprobamos que estamos en el mismo directorio
                 isCheck = false;
-                console.error("Compruebe que ambos proyectos están en el mismo directorio");
+                console.error("ERROR: compruebe que ambos proyectos están en el mismo directorio");
             }
 
         } else {
             isCheck = false;
-            console.error("El directorio: " + appSpectronPath + " no existe");
+            console.error("ERROR: el directorio " + appSpectronPath + " no existe");
         }
     } else {
         isCheck = false;
-        console.error("El directorio: " + appElectronPath + " no existe");
+        console.error("ERROR: el directorio " + appElectronPath + " no existe");
     }
 
     return isCheck
@@ -254,7 +254,7 @@ function getHtmlElements(): Array<string> {
     let htmlElements: Array<string> = new Array<string>();
     let libreryPath: string = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
     let dirFilePath: string; // Ruta para saber si es un archivo o un directorio
-    let file : string; // Nombre de la clase
+    let file: string; // Nombre de la clase
 
     if (checkExistDirectory(libreryPath)) {
         fs.readdirSync(libreryPath).forEach(dirFile => {
@@ -282,19 +282,39 @@ function getHtmlElements(): Array<string> {
 //          appSpectronPath: ruta del proyecto Spectron
 // Salida:
 //          Creación de toda la estructura de carpeta src con los fichero generados
-export function walkDir(appElectronPath: string, appSpectronPath: string) {
+export function walkDir() {
 
-    // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos
-    appElectronPath = pathUnixWindows(appElectronPath);
-    appSpectronPath = pathUnixWindows(appSpectronPath);
+    // Si está creado el fichero de configuración, con sus propiedades de forma correcta
+    if (checkAweconfig()) {
+        // Obtenemos las rutas de los proyectos del fichero aweconfig.json
+        let directories: Array<string> = getProjectPath();
+        let appElectronPath: string = directories[0];
+        let appSpectronPath: string = directories[1];
 
+        // Obtenemos las carpetas a ignorar
+        let ignore = getIgnore();
 
-    if (check(appElectronPath, appSpectronPath)) { // Si todas las validaciones son correctas
-        let electronOutPath: string = path.join(appElectronPath, "src"); // Ruta para el recorrido en el proyecto Angular/Electron
+        // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos
+        appElectronPath = pathUnixWindows(appElectronPath);
+        appSpectronPath = pathUnixWindows(appSpectronPath);
 
-        appSpectronPath = path.join(appSpectronPath, "testingAWE", "src");
-        createDirectory(appSpectronPath) // Elimine la estructura si ya está creada, y que la  cree de nuevo
-        createFileApplicationInstance(appElectronPath, appSpectronPath) // Genere el fichero Aplication Instance
-        walkDirSrc(electronOutPath, appSpectronPath)
+        // Si todas las validaciones son correctas respecto a las rutas de los proyectos
+        if (check(appElectronPath, appSpectronPath)) {
+
+            createDirectory(path.join(appSpectronPath, "testingAWE")); // Elimine la estructura si ya está creada, y que la  cree de nuevo
+            createFileApplicationInstance(appElectronPath, path.join(appSpectronPath, "testingAWE")) // Genere el fichero Aplication Instance
+
+            fs.readdirSync(appElectronPath).forEach(dirFile => {
+                let electronOutPath: string = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
+
+                if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
+                    if (!ignore.includes(dirFile)) { // Si no está incluido en el ignore, generamos los ficheros awe.ts por cada html encontrado
+
+                        let appSpectronOutPath: string = path.join(appSpectronPath, "testingAWE", dirFile);
+                        walkDirSrc(electronOutPath, appSpectronOutPath)
+                    }
+                }
+            });
+        }
     }
 }

@@ -9,4 +9,4 @@ export { Span } from './class/Span';
 export { Ul } from './class/Ul';
 
 // automation
-export { walkDir } from './aut/automation'
+export { walkDir } from './aut/automation';

@@ -17,7 +17,7 @@ function writeFile(path, data) {
 // Entrada:
 //          path: fichero html a parsear
 // Salida:
-//          string: html sin espacios
+//          toReturn: html sin espacios
 function htmlToString(path) {
     let toReturn = '';
     toReturn = fs_1.readFileSync(path, 'utf8').replace(/>\s+</g, "><");
