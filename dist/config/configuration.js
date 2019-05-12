@@ -14,6 +14,22 @@ function jsonToString(path) {
     toReturn = fs.readFileSync(path, 'utf8');
     return toReturn.trim();
 }
+// Devuelve la ruta del proyecto raíz en el que está instalado el módulo
+// Entrada:
+//          nothing: la ruta raíz se desconoce
+// Salida:
+//          path: ruta del proyecto raíz
+function getRootDirectory() {
+    return path.join(__dirname, "..", "..", "..", "..");
+}
+// Devuelve el nombre del archivo de configuración
+// Entrada:
+//          nothing
+// Salida:
+//          name: nombre del fichero
+function getNameFileConfig() {
+    return "aweconfig.json";
+}
 // Método que crea el fichero JSON por defecto, es decir, si no existe
 // crea un esqueleto, y es el usuario quién lo debe modificar
 // Entrada:
@@ -32,22 +48,6 @@ function createJson() {
     data += "\t\"ignore\": [\"node_modules\", \"dist\", \"e2e\", \".git\"]\n";
     data += "}";
     fs.writeFileSync(path.join(getRootDirectory(), nameFile), data); // Escribimos el fichero
-}
-// Devuelve la ruta del proyecto raíz en el que está instalado el módulo
-// Entrada:
-//          nothing: la ruta raíz se desconoce
-// Salida:
-//          path: ruta del proyecto raíz
-function getRootDirectory() {
-    return path.join(__dirname, "..", "..", "..", "..");
-}
-// Devuelve el nombre del archivo de configuración
-// Entrada:
-//          nothing
-// Salida:
-//          name: nombre del fichero
-function getNameFileConfig() {
-    return "aweconfig.json";
 }
 // Método que generar el objeto JSON
 // Entrada:

@@ -81,49 +81,18 @@ function createFile(file: string, electronPath: string, spectronPath: string) {
     }
 }
 
-// Método que nos permite determinar si la ruta de la aplicación electron
-// es la raíz del proyecto, además comprobamos que realmente se trata
-// de una aplicación Angular/Electron
-// Entrada:
-//          appElectronPath: ruta del proyecto Angular/Electron
-// Salida:
-//          isCheck: nos permite saber si es correcto o no
-function checkAppElectronPath(appElectronPath: string): boolean {
-
-    let isCheck: boolean = false; // Para determinar si la ruta es la raíz del proyecto
-    let validations: number = 0; // Variable para comprobar si cumple todos los requisitos
-
-    fs.readdirSync(appElectronPath).forEach(dirFile => {
-
-        let electronOutPath = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
-
-        if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
-            if (dirFile.toLowerCase().trim() === "src")++validations; // Estamos en la raíz del proyecto
-
-        } else { // Si es un archivo
-            if (dirFile.toLowerCase().trim() === "package.json")++validations; // Es un proyecto que usa npm
-        }
-
-    });
-
-    if (validations === 2) isCheck = true;
-
-
-    return isCheck
-}
-
-// Método que nos permite determinar si la ruta de la aplicación spectron
+// Método que nos permite determinar si la ruta de la aplicación spectron o electron
 // es la raíz del proyecto
 // Entrada:
-//          appSpectronPath: ruta del proyecto Spectron
+//          appPath: ruta del proyecto Spectron o Electron
 // Salida:
 //          isCheck: nos permite saber si es correcto o no
-function checkAppSpectronPath(appSpectronPath: string): boolean {
+function checkAppPath(appPath: string): boolean {
 
     let isCheck: boolean = false; // Para determinar si la ruta es la raíz del proyecto
     let validations: number = 0; // Variable para comprobar si cumple todos los requisitos
 
-    fs.readdirSync(appSpectronPath).forEach(dirFile => {
+    fs.readdirSync(appPath).forEach(dirFile => {
         if (dirFile.toLowerCase().trim() === ("package.json"))++validations; // Es un proyecto que usa npm
     });
 
@@ -188,14 +157,14 @@ function check(appElectronPath: string, appSpectronPath: string): boolean {
     if (checkExistDirectory(appElectronPath)) { // Si existe el directorio del proyecto Electron
         if (checkExistDirectory(appSpectronPath)) { // Si existe el directorio del proyecto Spectron
 
-            if (!checkAppElectronPath(appElectronPath)) { // Comprobamos que el proyecto Electron es válido
+            if (!checkAppPath(appElectronPath)) { // Comprobamos que el proyecto Electron es válido
                 isCheck = false;
-                console.error("ERROR: compruebe que es un proyecto válido");
+                console.error("ERROR: compruebe que es un proyecto Electron válido");
             }
 
-            if (!checkAppSpectronPath(appSpectronPath)) { // Comprobamos que el proyecto Spectron es válido
+            if (!checkAppPath(appSpectronPath)) { // Comprobamos que el proyecto Spectron es válido
                 isCheck = false;
-                console.error("ERROR: compruebe que es un proyecto válido");
+                console.error("ERROR: compruebe que es un proyecto Spectron válido");
             }
 
             if (!checkSameRoot(appElectronPath, appSpectronPath)) { // Comprobamos que estamos en el mismo directorio
@@ -301,7 +270,7 @@ export function walkDir() {
         // Si todas las validaciones son correctas respecto a las rutas de los proyectos
         if (check(appElectronPath, appSpectronPath)) {
 
-            createDirectory(path.join(appSpectronPath, "testingAWE")); // Elimine la estructura si ya está creada, y que la  cree de nuevo
+            createDirectory(path.join(appSpectronPath, "testingAWE")); // Elimina la estructura si ya está creada, y que la  cree de nuevo
             createFileApplicationInstance(appElectronPath, path.join(appSpectronPath, "testingAWE")) // Genere el fichero Aplication Instance
 
             fs.readdirSync(appElectronPath).forEach(dirFile => {
