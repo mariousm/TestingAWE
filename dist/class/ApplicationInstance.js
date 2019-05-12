@@ -12,20 +12,19 @@ const spectron_1 = require("spectron");
 const path_1 = require("path");
 class ApplicationInstance {
     // CONSTRUCTOR
-    constructor() {
+    constructor(nameProject) {
         this.app = new spectron_1.Application({
             path: path_1.join(__dirname, "..", "..", "node_modules", "electron", "dist", "electron.exe"),
-            args: [path_1.join(__dirname, "../../../../../tour-of-heroes")]
+            args: [path_1.join(__dirname, "..", "..", "..", "..", "..", nameProject)]
         });
     }
-    static getInstance() {
+    static getInstance(nameProject) {
         if (this._instance) {
-            //console.log("instancia creada");
             return this._instance;
         }
         else {
-            //console.log("instancia nueva");
-            this._instance = new this();
+            this._nameProject = nameProject;
+            this._instance = new this(nameProject);
             return this._instance;
         }
     }
@@ -47,5 +46,9 @@ class ApplicationInstance {
     getClient() {
         return this.client;
     }
+    static getNameProject() {
+        return this._nameProject;
+    }
 }
+ApplicationInstance._nameProject = "";
 exports.ApplicationInstance = ApplicationInstance;

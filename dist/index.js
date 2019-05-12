@@ -17,6 +17,6 @@ var Span_1 = require("./class/Span");
 exports.Span = Span_1.Span;
 var Ul_1 = require("./class/Ul");
 exports.Ul = Ul_1.Ul;
-// dom
-var parser_1 = require("./dom/parser");
-exports.logicParser = parser_1.logicParser;
+// automation
+var automation_1 = require("./aut/automation");
+exports.walkDir = automation_1.walkDir;

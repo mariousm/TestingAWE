@@ -8,22 +8,22 @@ export class ApplicationInstance {
     // ATRIBUTOS
     private app: Application;
     private client !: SpectronClient;
+    private static _nameProject: string = "";
 
     // CONSTRUCTOR
-    private constructor() {
+    private constructor(nameProject: string) {
         this.app = new Application({
             path: join(__dirname, "..", "..", "node_modules", "electron","dist","electron.exe"),
-            args: [join(__dirname, "../../../../../tour-of-heroes")]
+            args: [join(__dirname, "..", "..", "..", "..", "..", nameProject)]
         });
     }
 
-    public static getInstance(): ApplicationInstance {
+    public static getInstance(nameProject: string): ApplicationInstance {
         if (this._instance) {
-            //console.log("instancia creada");
             return this._instance;
         } else {
-            //console.log("instancia nueva");
-            this._instance = new this();
+            this._nameProject = nameProject;
+            this._instance = new this(nameProject);
             return this._instance
         }
     }
@@ -43,5 +43,9 @@ export class ApplicationInstance {
 
     public getClient(): SpectronClient {
         return this.client;
+    }
+
+    public static getNameProject() : string {
+        return this._nameProject;
     }
 }

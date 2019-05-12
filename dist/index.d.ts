@@ -6,4 +6,4 @@ export { H } from './class/H';
 export { Input } from './class/Input';
 export { Span } from './class/Span';
 export { Ul } from './class/Ul';
-export { logicParser } from './dom/parser';
+export { walkDir } from './aut/automation';

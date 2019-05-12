@@ -8,5 +8,5 @@ export { Input } from './class/Input';
 export { Span } from './class/Span';
 export { Ul } from './class/Ul';
 
-// dom
-export { logicParser } from './dom/parser';
+// automation
+export { walkDir } from './aut/automation';

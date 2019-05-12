@@ -17,7 +17,7 @@ export abstract class Root {
 
         // Obtener el cliente de la aplicación
         getClient(): SpectronClient {
-            return ApplicationInstance.getInstance().getClient()
+            return ApplicationInstance.getInstance(ApplicationInstance.getNameProject()).getClient()
         }
 
         // Obtener el selector
