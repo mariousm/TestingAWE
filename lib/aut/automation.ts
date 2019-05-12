@@ -14,20 +14,26 @@ import { checkAweconfig, getProjectPath, getIgnore } from '../config/configurati
 //          
 function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
 
-    fs.readdirSync(appElectronPath).forEach(dirFile => {
-        let electronOutPath = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
-        let relativePath = path.relative(appElectronPath, electronOutPath); // Obtenemos la ruta relativa desde el proyecto Electron padre hasta cada uno de los hijos
-        let spectronOutPath = path.resolve(appSpectronPath, relativePath); // Ruta para el recorrido en el proyecto Spectron
+    try {
 
-        if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
-            // createDirectory(spectronOutPath) // Creamos el directorio
-            walkDirSrc(electronOutPath, spectronOutPath)
+        fs.readdirSync(appElectronPath).forEach(dirFile => {
+            let electronOutPath = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
+            let relativePath = path.relative(appElectronPath, electronOutPath); // Obtenemos la ruta relativa desde el proyecto Electron padre hasta cada uno de los hijos
+            let spectronOutPath = path.resolve(appSpectronPath, relativePath); // Ruta para el recorrido en el proyecto Spectron
 
-        } else {  // Si es un archivo
-            createFile(dirFile, electronOutPath, spectronOutPath) // Creamos el fichero
+            if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
+                // createDirectory(spectronOutPath) // Creamos el directorio
+                walkDirSrc(electronOutPath, spectronOutPath)
 
-        }
-    });
+            } else {  // Si es un archivo
+                createFile(dirFile, electronOutPath, spectronOutPath) // Creamos el fichero
+
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // Método que crea el directorio de forma paralela desde el proyecto Angular/Electron al proyecto Spectron
@@ -38,11 +44,17 @@ function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
 //          generación del directorio
 function createDirectory(spectronPath: string) {
 
-    if (fs.existsSync(spectronPath)) { // Si exite el directorio lo borramos, ya que de lo contrario da Error
-        fsExtra.emptyDirSync(spectronPath); // Borra todo lo que haya dentro menos el propio directorio
-        // fs.rmdirSync(spectronPath); // Borra el directorio, una vez que hemos borrado todo lo que hay dentro
+    try {
+
+        if (fs.existsSync(spectronPath)) { // Si exite el directorio lo borramos, ya que de lo contrario da Error
+            fsExtra.emptyDirSync(spectronPath); // Borra todo lo que haya dentro menos el propio directorio
+            // fs.rmdirSync(spectronPath); // Borra el directorio, una vez que hemos borrado todo lo que hay dentro
+        }
+        fsExtra.ensureDirSync(spectronPath) // Resolvemos el appSpectronPath con el path relativo para crear el directorio
+
+    } catch (error) {
+        console.log(error);
     }
-    fsExtra.ensureDirSync(spectronPath) // Resolvemos el appSpectronPath con el path relativo para crear el directorio
 }
 
 // Método que crea el fichero de la toolkit por cada html que encontramos
@@ -54,30 +66,36 @@ function createDirectory(spectronPath: string) {
 //          generación del fichero
 function createFile(file: string, electronPath: string, spectronPath: string) {
 
-    if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
-        let spectronPathDirectory: string = ""; // Ruta para la creación del fichero
-        let htmlElements: Array<string> = getHtmlElements() // Todos los elementos html que soporta la librería
-        let indexLastSlashWindows: number = spectronPath.lastIndexOf("\\");
-        let indexLastSlashUnix: number = spectronPath.lastIndexOf("/");
+    try {
 
-        if (process.platform === "win32") { // Si estamos en Windows
-            // Para cambiar el nombre y la extensión del  fichero generado
-            spectronPath = spectronPath.slice(0, indexLastSlashWindows + 1) + file.substring(0, file.indexOf(".")) + ".awe.ts";
-            spectronPathDirectory = spectronPath.slice(0, indexLastSlashWindows + 1);
+        if (path.extname(electronPath) === ".html") { // Generamos el fichero de la toolkit por cada html que hayamos encontrado
+            let spectronPathDirectory: string = ""; // Ruta para la creación del fichero
+            let htmlElements: Array<string> = getHtmlElements() // Todos los elementos html que soporta la librería
+            let indexLastSlashWindows: number = spectronPath.lastIndexOf("\\");
+            let indexLastSlashUnix: number = spectronPath.lastIndexOf("/");
 
-        } else { // Si estamos en Unix
-            // Para cambiar el nombre y la extensión del  fichero generado
-            spectronPath = spectronPath.slice(0, indexLastSlashUnix + 1) + file.substring(0, file.indexOf(".")) + ".awe.ts";
-            spectronPathDirectory = spectronPath.slice(0, indexLastSlashUnix + 1);
+            if (process.platform === "win32") { // Si estamos en Windows
+                // Para cambiar el nombre y la extensión del  fichero generado
+                spectronPath = spectronPath.slice(0, indexLastSlashWindows + 1) + file.substring(0, file.indexOf(".")) + ".awe.ts";
+                spectronPathDirectory = spectronPath.slice(0, indexLastSlashWindows + 1);
+
+            } else { // Si estamos en Unix
+                // Para cambiar el nombre y la extensión del  fichero generado
+                spectronPath = spectronPath.slice(0, indexLastSlashUnix + 1) + file.substring(0, file.indexOf(".")) + ".awe.ts";
+                spectronPathDirectory = spectronPath.slice(0, indexLastSlashUnix + 1);
+            }
+
+            fsExtra.ensureDirSync(spectronPathDirectory);
+
+            if (fs.existsSync(spectronPath)) { // Si exite el fichero lo borramos, de lo contrario da Error
+                fs.unlinkSync(spectronPath);
+            }
+
+            logicParser(electronPath, spectronPath, htmlElements) // logicParser genera los ficheros
         }
 
-        fsExtra.ensureDirSync(spectronPathDirectory);
-
-        if (fs.existsSync(spectronPath)) { // Si exite el fichero lo borramos, de lo contrario da Error
-            fs.unlinkSync(spectronPath);
-        }
-
-        logicParser(electronPath, spectronPath, htmlElements) // logicParser genera los ficheros
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -92,11 +110,17 @@ function checkAppPath(appPath: string): boolean {
     let isCheck: boolean = false; // Para determinar si la ruta es la raíz del proyecto
     let validations: number = 0; // Variable para comprobar si cumple todos los requisitos
 
-    fs.readdirSync(appPath).forEach(dirFile => {
-        if (dirFile.toLowerCase().trim() === ("package.json"))++validations; // Es un proyecto que usa npm
-    });
+    try {
 
-    if (validations === 1) isCheck = true;
+        fs.readdirSync(appPath).forEach(dirFile => {
+            if (dirFile.toLowerCase().trim() === ("package.json"))++validations; // Es un proyecto que usa npm
+        });
+
+        if (validations === 1) isCheck = true;
+
+    } catch (error) {
+        console.log(error);
+    }
 
     return isCheck
 }
@@ -114,18 +138,24 @@ function checkSameRoot(appElectronPath: string, appSpectronPath: string): boolea
     let indexLastSlashElectron: number = 0;
     let indexLastSlashSpectron: number = 0;
 
-    if (process.platform === "win32") {
-        indexLastSlashElectron = appElectronPath.lastIndexOf("\\");
-        indexLastSlashSpectron = appSpectronPath.lastIndexOf("\\");
-    } else {
-        indexLastSlashElectron = appElectronPath.lastIndexOf("/");
-        indexLastSlashSpectron = appSpectronPath.lastIndexOf("/");
+    try {
+
+        if (process.platform === "win32") {
+            indexLastSlashElectron = appElectronPath.lastIndexOf("\\");
+            indexLastSlashSpectron = appSpectronPath.lastIndexOf("\\");
+        } else {
+            indexLastSlashElectron = appElectronPath.lastIndexOf("/");
+            indexLastSlashSpectron = appSpectronPath.lastIndexOf("/");
+        }
+
+        appElectronPath = appElectronPath.slice(0, indexLastSlashElectron + 1);
+        appSpectronPath = appSpectronPath.slice(0, indexLastSlashSpectron + 1);
+
+        if (appElectronPath === appSpectronPath) isCheck = true;
+
+    } catch (error) {
+        console.log(error);
     }
-
-    appElectronPath = appElectronPath.slice(0, indexLastSlashElectron + 1);
-    appSpectronPath = appSpectronPath.slice(0, indexLastSlashSpectron + 1);
-
-    if (appElectronPath === appSpectronPath) isCheck = true;
 
     return isCheck
 }
@@ -139,7 +169,13 @@ function checkExistDirectory(path: string): boolean {
 
     let isCheck = false;
 
-    if (fs.existsSync(path)) isCheck = true;
+    try {
+
+        if (fs.existsSync(path)) isCheck = true;
+
+    } catch (error) {
+        console.log(error);
+    }
 
     return isCheck
 }
@@ -154,31 +190,37 @@ function check(appElectronPath: string, appSpectronPath: string): boolean {
 
     let isCheck = true;
 
-    if (checkExistDirectory(appElectronPath)) { // Si existe el directorio del proyecto Electron
-        if (checkExistDirectory(appSpectronPath)) { // Si existe el directorio del proyecto Spectron
+    try {
 
-            if (!checkAppPath(appElectronPath)) { // Comprobamos que el proyecto Electron es válido
+        if (checkExistDirectory(appElectronPath)) { // Si existe el directorio del proyecto Electron
+            if (checkExistDirectory(appSpectronPath)) { // Si existe el directorio del proyecto Spectron
+
+                if (!checkAppPath(appElectronPath)) { // Comprobamos que el proyecto Electron es válido
+                    isCheck = false;
+                    console.error("ERROR: compruebe que es un proyecto Electron válido");
+                }
+
+                if (!checkAppPath(appSpectronPath)) { // Comprobamos que el proyecto Spectron es válido
+                    isCheck = false;
+                    console.error("ERROR: compruebe que es un proyecto Spectron válido");
+                }
+
+                if (!checkSameRoot(appElectronPath, appSpectronPath)) { // Comprobamos que estamos en el mismo directorio
+                    isCheck = false;
+                    console.error("ERROR: compruebe que ambos proyectos están en el mismo directorio");
+                }
+
+            } else {
                 isCheck = false;
-                console.error("ERROR: compruebe que es un proyecto Electron válido");
+                console.error("ERROR: el directorio " + appSpectronPath + " no existe");
             }
-
-            if (!checkAppPath(appSpectronPath)) { // Comprobamos que el proyecto Spectron es válido
-                isCheck = false;
-                console.error("ERROR: compruebe que es un proyecto Spectron válido");
-            }
-
-            if (!checkSameRoot(appElectronPath, appSpectronPath)) { // Comprobamos que estamos en el mismo directorio
-                isCheck = false;
-                console.error("ERROR: compruebe que ambos proyectos están en el mismo directorio");
-            }
-
         } else {
             isCheck = false;
-            console.error("ERROR: el directorio " + appSpectronPath + " no existe");
+            console.error("ERROR: el directorio " + appElectronPath + " no existe");
         }
-    } else {
-        isCheck = false;
-        console.error("ERROR: el directorio " + appElectronPath + " no existe");
+
+    } catch (error) {
+        console.log(error);
     }
 
     return isCheck
@@ -193,23 +235,30 @@ function pathUnixWindows(path: string): string {
 
     let pathUnixWindows: string = "";
 
-    if (process.platform === "win32") { // Si se ejecuta en windows
-        if (path.indexOf("/") !== -1) { // Si trae el path de Unix hay que convertir
-            for (let i = 0; i < path.length; ++i) {
-                path[i] === "/" ? pathUnixWindows += "\\" : pathUnixWindows += path[i];
+    try {
+
+        if (process.platform === "win32") { // Si se ejecuta en windows
+            if (path.indexOf("/") !== -1) { // Si trae el path de Unix hay que convertir
+                for (let i = 0; i < path.length; ++i) {
+                    path[i] === "/" ? pathUnixWindows += "\\" : pathUnixWindows += path[i];
+                }
+            } else {
+                pathUnixWindows = path;
             }
-        } else {
-            pathUnixWindows = path;
-        }
-    } else { // Si se ejecuta en Unix
-        if (path.indexOf("\\") !== -1) { // Si trae el path de Windows hay que convertir
-            for (let i = 0; i < path.length; ++i) {
-                path[i] === "\\" ? pathUnixWindows += "/" : pathUnixWindows += path[i];
+        } else { // Si se ejecuta en Unix
+            if (path.indexOf("\\") !== -1) { // Si trae el path de Windows hay que convertir
+                for (let i = 0; i < path.length; ++i) {
+                    path[i] === "\\" ? pathUnixWindows += "/" : pathUnixWindows += path[i];
+                }
+            } else {
+                pathUnixWindows = path;
             }
-        } else {
-            pathUnixWindows = path;
         }
+
+    } catch (error) {
+        console.log(error);
     }
+
     return pathUnixWindows
 }
 
@@ -221,24 +270,31 @@ function pathUnixWindows(path: string): string {
 function getHtmlElements(): Array<string> {
 
     let htmlElements: Array<string> = new Array<string>();
-    let libreryPath: string = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
-    let dirFilePath: string; // Ruta para saber si es un archivo o un directorio
-    let file: string; // Nombre de la clase
 
-    if (checkExistDirectory(libreryPath)) {
-        fs.readdirSync(libreryPath).forEach(dirFile => {
+    try {
 
-            dirFilePath = path.join(libreryPath, dirFile);
+        let libreryPath: string = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
+        let dirFilePath: string; // Ruta para saber si es un archivo o un directorio
+        let file: string; // Nombre de la clase
 
-            if (fs.statSync(dirFilePath).isFile()) { // Si es un archivo
-                file = dirFile.slice(0, dirFile.indexOf("."));
+        if (checkExistDirectory(libreryPath)) {
+            fs.readdirSync(libreryPath).forEach(dirFile => {
 
-                if (!htmlElements.includes(file)) {
-                    htmlElements.push(file);
+                dirFilePath = path.join(libreryPath, dirFile);
+
+                if (fs.statSync(dirFilePath).isFile()) { // Si es un archivo
+                    file = dirFile.slice(0, dirFile.indexOf("."));
+
+                    if (!htmlElements.includes(file)) {
+                        htmlElements.push(file);
+                    }
+
                 }
+            });
+        }
 
-            }
-        });
+    } catch (error) {
+        console.log(error);
     }
 
     return htmlElements
@@ -252,38 +308,43 @@ function getHtmlElements(): Array<string> {
 // Salida:
 //          Creación de toda la estructura de carpeta src con los fichero generados
 export function walkDir() {
+    try {
 
-    // Si está creado el fichero de configuración, con sus propiedades de forma correcta
-    if (checkAweconfig()) {
-        // Obtenemos las rutas de los proyectos del fichero aweconfig.json
-        let directories: Array<string> = getProjectPath();
-        let appElectronPath: string = directories[0];
-        let appSpectronPath: string = directories[1];
+        // Si está creado el fichero de configuración, con sus propiedades de forma correcta
+        if (checkAweconfig()) {
+            // Obtenemos las rutas de los proyectos del fichero aweconfig.json
+            let directories: Array<string> = getProjectPath();
+            let appElectronPath: string = directories[0];
+            let appSpectronPath: string = directories[1];
 
-        // Obtenemos las carpetas a ignorar
-        let ignore = getIgnore();
+            // Obtenemos las carpetas a ignorar
+            let ignore = getIgnore();
 
-        // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos
-        appElectronPath = pathUnixWindows(appElectronPath);
-        appSpectronPath = pathUnixWindows(appSpectronPath);
+            // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos
+            appElectronPath = pathUnixWindows(appElectronPath);
+            appSpectronPath = pathUnixWindows(appSpectronPath);
 
-        // Si todas las validaciones son correctas respecto a las rutas de los proyectos
-        if (check(appElectronPath, appSpectronPath)) {
+            // Si todas las validaciones son correctas respecto a las rutas de los proyectos
+            if (check(appElectronPath, appSpectronPath)) {
 
-            createDirectory(path.join(appSpectronPath, "testingAWE")); // Elimina la estructura si ya está creada, y que la  cree de nuevo
-            createFileApplicationInstance(appElectronPath, path.join(appSpectronPath, "testingAWE")) // Genere el fichero Aplication Instance
+                createDirectory(path.join(appSpectronPath, "testingAWE")); // Elimina la estructura si ya está creada, y que la  cree de nuevo
+                createFileApplicationInstance(appElectronPath, path.join(appSpectronPath, "testingAWE")) // Genere el fichero Aplication Instance
 
-            fs.readdirSync(appElectronPath).forEach(dirFile => {
-                let electronOutPath: string = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
+                fs.readdirSync(appElectronPath).forEach(dirFile => {
+                    let electronOutPath: string = path.join(appElectronPath, dirFile); // Ruta para el recorrido en el proyecto Angular/Electron
 
-                if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
-                    if (!ignore.includes(dirFile)) { // Si no está incluido en el ignore, generamos los ficheros awe.ts por cada html encontrado
+                    if (fs.statSync(electronOutPath).isDirectory()) { // Si es un directorio
+                        if (!ignore.includes(dirFile)) { // Si no está incluido en el ignore, generamos los ficheros awe.ts por cada html encontrado
 
-                        let appSpectronOutPath: string = path.join(appSpectronPath, "testingAWE", dirFile);
-                        walkDirSrc(electronOutPath, appSpectronOutPath)
+                            let appSpectronOutPath: string = path.join(appSpectronPath, "testingAWE", dirFile);
+                            walkDirSrc(electronOutPath, appSpectronOutPath)
+                        }
                     }
-                }
-            });
+                });
+            }
         }
+
+    } catch (error) {
+        console.log(error);
     }
 }

@@ -11,7 +11,12 @@ const fs = require("fs");
 //          toReturn: contenido del fichero en string
 function jsonToString(path) {
     let toReturn = '';
-    toReturn = fs.readFileSync(path, 'utf8');
+    try {
+        toReturn = fs.readFileSync(path, 'utf8');
+    }
+    catch (error) {
+        console.log(error);
+    }
     return toReturn.trim();
 }
 // Devuelve la ruta del proyecto raíz en el que está instalado el módulo
@@ -38,16 +43,21 @@ function getNameFileConfig() {
 // Salida:
 //          generación del fichero aweconfig.json
 function createJson() {
-    let nameFile = getNameFileConfig();
-    let data = "";
-    data += "{\n";
-    data += "\t\"directories\": {\n";
-    data += "\t\t\"electronProject\": \"electronProjectPath\",\n";
-    data += "\t\t\"spectronProject\": \"spectronProjectPath\"\n";
-    data += "\t},\n";
-    data += "\t\"ignore\": [\"node_modules\", \"dist\", \"e2e\", \".git\"]\n";
-    data += "}";
-    fs.writeFileSync(path.join(getRootDirectory(), nameFile), data); // Escribimos el fichero
+    try {
+        let nameFile = getNameFileConfig();
+        let data = "";
+        data += "{\n";
+        data += "\t\"directories\": {\n";
+        data += "\t\t\"electronProject\": \"electronProjectPath\",\n";
+        data += "\t\t\"spectronProject\": \"spectronProjectPath\"\n";
+        data += "\t},\n";
+        data += "\t\"ignore\": [\"node_modules\", \"dist\", \"e2e\", \".git\"]\n";
+        data += "}";
+        fs.writeFileSync(path.join(getRootDirectory(), nameFile), data); // Escribimos el fichero
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 // Método que generar el objeto JSON
 // Entrada:
@@ -55,10 +65,16 @@ function createJson() {
 // Salida:
 //          objJson: el objeto JSON
 function getObjJson() {
-    // No hace falta comprobar que existe el directorio y el fichero,
-    // porque si no existe en la automatización, no haremos la llamada para obtener la configuración
-    let json = jsonToString(path.join(getRootDirectory(), getNameFileConfig()));
-    let objJson = JSON.parse(json);
+    let objJson;
+    try {
+        // No hace falta comprobar que existe el directorio y el fichero,
+        // porque si no existe en la automatización, no haremos la llamada para obtener la configuración
+        let json = jsonToString(path.join(getRootDirectory(), getNameFileConfig()));
+        objJson = JSON.parse(json);
+    }
+    catch (error) {
+        console.log(error);
+    }
     return objJson;
 }
 // Método que comprueba que existe el fichero aweconfig.json en la raíz del proyecto Spectron
@@ -68,10 +84,15 @@ function getObjJson() {
 //          isCheck: determina si existe el fichero de configuración o no
 function checkExistFile() {
     let isCheck = false; // Para determinar si existe el archivo aweconfig.json
-    fs.readdirSync(getRootDirectory()).forEach(dirFile => {
-        if (dirFile.toLowerCase().trim() === getNameFileConfig())
-            isCheck = true; // Existe el archivo
-    });
+    try {
+        fs.readdirSync(getRootDirectory()).forEach(dirFile => {
+            if (dirFile.toLowerCase().trim() === getNameFileConfig())
+                isCheck = true; // Existe el archivo
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
     return isCheck;
 }
 // Comprueba si existen la propiedades  del fichero aweconfig.json
@@ -84,33 +105,43 @@ function checkExistFile() {
 //                  [existAngularPath, existSpectronPath, existIgnore]
 function checkExistProjectProperty() {
     let isCheck = [false, false, false];
-    let objJson = getObjJson();
-    if (objJson.directories.electronProject !== undefined)
-        isCheck[0] = true;
-    if (objJson.directories.spectronProject !== undefined)
-        isCheck[1] = true;
-    if (objJson.ignore !== undefined) {
-        let aux = objJson.ignore;
-        if (aux.length > 0)
-            isCheck[2] = true;
+    try {
+        let objJson = getObjJson();
+        if (objJson.directories.electronProject !== undefined)
+            isCheck[0] = true;
+        if (objJson.directories.spectronProject !== undefined)
+            isCheck[1] = true;
+        if (objJson.ignore !== undefined) {
+            let aux = objJson.ignore;
+            if (aux.length > 0)
+                isCheck[2] = true;
+        }
+    }
+    catch (error) {
+        console.log(error);
     }
     return isCheck;
 }
 function checkAweconfig() {
     let isCheck = true;
     let isChechProperty = [];
-    if (!checkExistFile()) {
-        createJson();
-        console.log("NOTA: modifique el fichero " + getNameFileConfig());
+    try {
+        if (!checkExistFile()) {
+            createJson();
+            console.log("NOTA: modifique el fichero " + getNameFileConfig());
+        }
+        isChechProperty = checkExistProjectProperty();
+        if (!isChechProperty[0]) {
+            isCheck = false;
+            console.log("ERROR: no está definida la propiedad electronProject en " + getNameFileConfig());
+        }
+        if (!isChechProperty[1]) {
+            isCheck = false;
+            console.log("ERROR: no está definida la propiedad spectronProject en " + getNameFileConfig());
+        }
     }
-    isChechProperty = checkExistProjectProperty();
-    if (!isChechProperty[0]) {
-        isCheck = false;
-        console.log("ERROR: no está definida la propiedad electronProject en " + getNameFileConfig());
-    }
-    if (!isChechProperty[1]) {
-        isCheck = false;
-        console.log("ERROR: no está definida la propiedad spectronProject en " + getNameFileConfig());
+    catch (error) {
+        console.log(error);
     }
     return isCheck;
 }
@@ -124,9 +155,14 @@ function getProjectPath() {
     // No hace falta comprobar que existe el directorio y el fichero,
     // porque si no existe en la automatización, no haremos la llamada para obtener la configuración
     let path = [];
-    let objJson = getObjJson();
-    path.push(objJson.directories.electronProject);
-    path.push(objJson.directories.spectronProject);
+    try {
+        let objJson = getObjJson();
+        path.push(objJson.directories.electronProject);
+        path.push(objJson.directories.spectronProject);
+    }
+    catch (error) {
+        console.log(error);
+    }
     return path;
 }
 exports.getProjectPath = getProjectPath;
@@ -139,10 +175,15 @@ function getIgnore() {
     // No hace falta comprobar que existe el directorio y el fichero,
     // porque si no existe en la automatización, no haremos la llamada para obtener la configuración
     let ignore = [];
-    let objJson = getObjJson();
-    let isChechProperty = checkExistProjectProperty();
-    if (isChechProperty[2]) {
-        ignore = objJson.ignore;
+    try {
+        let objJson = getObjJson();
+        let isChechProperty = checkExistProjectProperty();
+        if (isChechProperty[2]) {
+            ignore = objJson.ignore;
+        }
+    }
+    catch (error) {
+        console.log(error);
     }
     return ignore;
 }
