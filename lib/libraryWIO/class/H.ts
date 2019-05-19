@@ -10,9 +10,4 @@ export class H extends Root{
     }
 
     // MÉTODOS
-
-    // Método para obtener el texto
-    async getText() {
-        return await this.getClient().getText(this.id);
-    }
 }

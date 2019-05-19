@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class A extends Root{
+export class Div extends Root{
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -10,9 +10,4 @@ export class A extends Root{
     }
 
     // MÉTODOS
-
-    // Método para pulsar un botón
-    async click() {
-        return await this.getClient().click(this.id).pause(1000);
-    }
 }

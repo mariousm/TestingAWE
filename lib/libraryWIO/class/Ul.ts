@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class Span extends Root{
+export class Ul extends Root{
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -10,9 +10,4 @@ export class Span extends Root{
     }
 
     // MÉTODOS
-
-    // Método para obtener el texto
-    async getText() {
-        return await this.getClient().getText(this.id);
-    }
 }
