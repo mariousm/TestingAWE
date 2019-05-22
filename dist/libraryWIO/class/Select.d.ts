@@ -1,10 +1,7 @@
 /// <reference types="webdriverio" />
-import { Root } from "./Root";
-import { Value } from "../interfaces/Value";
-export declare class Select extends Root implements Value {
+import { ValueAbstract } from "../abstractClass/ValueAbstract";
+export declare class Select extends ValueAbstract {
     constructor(id: string);
-    addValue(value: string): Promise<WebdriverIO.RawResult<null>>;
-    setValue(value: string): Promise<WebdriverIO.RawResult<null>>;
-    clearValue(): Promise<WebdriverIO.RawResult<null>>;
-    getValue(): Promise<string>;
+    selectByIndex(index: number): Promise<WebdriverIO.RawResult<null> | undefined>;
+    selectByVisibleText(text: string): Promise<WebdriverIO.RawResult<null> | undefined>;
 }

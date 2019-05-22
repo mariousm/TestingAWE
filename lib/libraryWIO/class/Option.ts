@@ -1,7 +1,7 @@
 // IMPORTACIONES
-import { ValueAbstract } from "../abstractClass/ValueAbstract";
+import { ValueSelectedAbstract } from "../abstractClass/ValueSelectedAbstract";
 
-export class Textarea extends ValueAbstract {
+export class Option extends ValueSelectedAbstract {
     // ATRIBUTOS
 
     // CONSTRUCTOR

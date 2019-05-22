@@ -49,6 +49,12 @@ class ApplicationInstance {
     static getNameProject() {
         return this._nameProject;
     }
+    // Guardar una captura de pantalla de una elmento a un archivo PNG
+    saveScreenhot(selector, filename) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.getClient().$(selector).saveScreenshot(filename);
+        });
+    }
 }
 ApplicationInstance._nameProject = "";
 exports.ApplicationInstance = ApplicationInstance;

@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class H extends Root{
+export class H extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -10,4 +10,5 @@ export class H extends Root{
     }
 
     // MÉTODOS
+
 }

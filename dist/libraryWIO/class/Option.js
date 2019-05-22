@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const ValueAbstract_1 = require("../abstractClass/ValueAbstract");
-class Textarea extends ValueAbstract_1.ValueAbstract {
+const ValueSelectedAbstract_1 = require("../abstractClass/ValueSelectedAbstract");
+class Option extends ValueSelectedAbstract_1.ValueSelectedAbstract {
     // ATRIBUTOS
     // CONSTRUCTOR
     constructor(id) {
         super(id);
     }
 }
-exports.Textarea = Textarea;
+exports.Option = Option;

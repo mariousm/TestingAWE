@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { Application, SpectronClient } from 'spectron';
 export declare class ApplicationInstance {
     private static _instance;
@@ -10,4 +11,5 @@ export declare class ApplicationInstance {
     stopApplication(): Promise<Application | undefined>;
     getClient(): SpectronClient;
     static getNameProject(): string;
+    saveScreenhot(selector: string, filename: string): Promise<Buffer>;
 }

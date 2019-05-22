@@ -1,39 +1,12 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const Root_1 = require("./Root");
-class Button extends Root_1.Root {
+const ClickAbstract_1 = require("../abstractClass/ClickAbstract");
+class Button extends ClickAbstract_1.ClickAbstract {
     // ATRIBUTOS
     // CONSTRUCTOR
     constructor(id) {
         super(id);
-    }
-    // MÉTODOS
-    // Método para pulsar un botón
-    click() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getClient().click(this.id).pause(1000);
-        });
-    }
-    // Método para realizar doble click
-    doubleClick() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getClient().doubleClick(this.id).pause(1000);
-        });
-    }
-    // Método para realizar click con el botón derecho del ratón
-    rightClick() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getClient().rightClick(this.id).pause(1000);
-        });
     }
 }
 exports.Button = Button;

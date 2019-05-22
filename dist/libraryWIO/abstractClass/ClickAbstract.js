@@ -9,30 +9,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const ValueAbstract_1 = require("../abstractClass/ValueAbstract");
-class Select extends ValueAbstract_1.ValueAbstract {
-    // ATRIBUTOS
-    // CONSTRUCTOR
-    constructor(id) {
-        super(id);
-    }
-    // MÉTODOS
-    // Seleccionar una opción a partir del index
-    selectByIndex(index) {
+const Root_1 = require("../class/Root");
+class ClickAbstract extends Root_1.Root {
+    // Método para pulsar un botón
+    click() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.getClient().selectByIndex(this.id, index);
+                return yield this.getClient().click(this.id).pause(1000);
             }
             catch (error) {
                 console.log(error);
             }
         });
     }
-    // Seleccionar una opción a partir del texto
-    selectByVisibleText(text) {
+    // Método para realizar doble click
+    doubleClick() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.getClient().selectByVisibleText(this.id, text);
+                return yield this.getClient().doubleClick(this.id).pause(1000);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    // Método para realizar click con el botón derecho del ratón
+    rightClick() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.getClient().rightClick(this.id).pause(1000);
             }
             catch (error) {
                 console.log(error);
@@ -40,4 +45,4 @@ class Select extends ValueAbstract_1.ValueAbstract {
         });
     }
 }
-exports.Select = Select;
+exports.ClickAbstract = ClickAbstract;

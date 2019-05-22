@@ -1,8 +1,4 @@
-import { Root } from "./Root";
-import { Click } from "../interfaces/Click";
-export declare class A extends Root implements Click {
+import { ClickAbstract } from "../abstractClass/ClickAbstract";
+export declare class A extends ClickAbstract {
     constructor(id: string);
-    click(): Promise<void>;
-    doubleClick(): Promise<void>;
-    rightClick(): Promise<void>;
 }

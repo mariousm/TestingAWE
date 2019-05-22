@@ -13,7 +13,7 @@ export class ApplicationInstance {
     // CONSTRUCTOR
     private constructor(nameProject: string) {
         this.app = new Application({
-            path: join(__dirname, "..", "..", "node_modules", "electron","dist","electron.exe"),
+            path: join(__dirname, "..", "..", "node_modules", "electron", "dist", "electron.exe"),
             args: [join(__dirname, "..", "..", "..", "..", "..", nameProject)]
         });
     }
@@ -37,7 +37,7 @@ export class ApplicationInstance {
 
     public async stopApplication() {
         if (this.app && this.app.isRunning()) {
-              return this.app.stop();
+            return this.app.stop();
         }
     }
 
@@ -45,7 +45,12 @@ export class ApplicationInstance {
         return this.client;
     }
 
-    public static getNameProject() : string {
+    public static getNameProject(): string {
         return this._nameProject;
+    }
+
+    // Guardar una captura de pantalla de una elmento a un archivo PNG
+    async saveScreenhot(selector: string, filename: string) {
+        return await this.getClient().$(selector).saveScreenshot(filename);
     }
 }

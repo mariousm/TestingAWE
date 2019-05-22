@@ -1,7 +1,7 @@
 // IMPORTACIONES
-import { ValueAbstract } from "../abstractClass/ValueAbstract";
+import { Root } from "./Root";
 
-export class Textarea extends ValueAbstract {
+export class Form extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR

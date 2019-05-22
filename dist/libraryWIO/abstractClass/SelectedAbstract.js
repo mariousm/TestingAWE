@@ -9,30 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const ValueAbstract_1 = require("../abstractClass/ValueAbstract");
-class Select extends ValueAbstract_1.ValueAbstract {
-    // ATRIBUTOS
-    // CONSTRUCTOR
-    constructor(id) {
-        super(id);
-    }
-    // MÉTODOS
-    // Seleccionar una opción a partir del index
-    selectByIndex(index) {
+const Root_1 = require("../class/Root");
+class SelectedAbstract extends Root_1.Root {
+    // Devuelve verdadero si una Opcion o un Input es seleccionado
+    isSelected() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.getClient().selectByIndex(this.id, index);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    // Seleccionar una opción a partir del texto
-    selectByVisibleText(text) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.getClient().selectByVisibleText(this.id, text);
+                return yield this.getClient().isSelected(this.id);
             }
             catch (error) {
                 console.log(error);
@@ -40,4 +23,4 @@ class Select extends ValueAbstract_1.ValueAbstract {
         });
     }
 }
-exports.Select = Select;
+exports.SelectedAbstract = SelectedAbstract;

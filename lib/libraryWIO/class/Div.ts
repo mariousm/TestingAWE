@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class Div extends Root{
+export class Div extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -10,4 +10,5 @@ export class Div extends Root{
     }
 
     // MÉTODOS
+
 }

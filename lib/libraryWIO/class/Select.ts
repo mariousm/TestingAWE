@@ -1,8 +1,7 @@
 // IMPORTACIONES
-import { Root } from "./Root";
-import { Value } from "../interfaces/Value";
+import { ValueAbstract } from "../abstractClass/ValueAbstract";
 
-export class Select extends Root implements Value {
+export class Select extends ValueAbstract {
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -12,23 +11,23 @@ export class Select extends Root implements Value {
 
     // MÉTODOS
 
-    // Método para establecer un valor
-    async addValue(value: string) {
-        return await this.getClient().addValue(this.id, value);
+    // Seleccionar una opción a partir del index
+    async selectByIndex(index: number) {
+        try {
+            return await this.getClient().selectByIndex(this.id, index);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    // Método para establecer un valor (borra lo que había)
-    async setValue(value: string) {
-        return await this.getClient().setValue(this.id, value);
-    }
+    // Seleccionar una opción a partir del texto
+    async selectByVisibleText(text: string) {
+        try {
+            return await this.getClient().selectByVisibleText(this.id, text);
 
-    // Método para limpiar el valor
-    async clearValue() {
-        return await this.getClient().clearElement(this.id);
-    }
-
-    // Método para obtener el valor
-    async getValue() {
-        return await this.getClient().getValue(this.id);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

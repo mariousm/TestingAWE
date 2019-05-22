@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class Ul extends Root{
+export class Ul extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR

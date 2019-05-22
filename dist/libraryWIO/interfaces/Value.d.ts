@@ -3,4 +3,5 @@ export interface Value {
     setValue(value: string): any;
     clearValue(): any;
     getValue(): any;
+    checkValue(value: string): any;
 }
