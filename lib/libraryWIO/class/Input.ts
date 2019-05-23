@@ -1,7 +1,7 @@
 // IMPORTACIONES
-import { ValueSelectedAbstract } from "../abstractClass/ValueSelectedAbstract";
+import { ValueSelectedClickAbstract } from "../abstractClass/ValueSelectedClickAbstract";
 
-export class Input extends ValueSelectedAbstract {
+export class Input extends ValueSelectedClickAbstract {
     // ATRIBUTOS
 
     // CONSTRUCTOR

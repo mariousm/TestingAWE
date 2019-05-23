@@ -234,7 +234,7 @@ function pathUnixWindows(path) {
 function getHtmlElements() {
     let htmlElements = new Array();
     try {
-        let libreryPath = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
+        let libreryPath = path.join(__dirname, "..", "libraryWIO", "class"); // Ruta donde se encuentran definidas las clases
         let dirFilePath; // Ruta para saber si es un archivo o un directorio
         let file; // Nombre de la clase
         if (checkExistDirectory(libreryPath)) {

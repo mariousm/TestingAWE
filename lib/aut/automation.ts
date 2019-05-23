@@ -273,7 +273,7 @@ function getHtmlElements(): Array<string> {
 
     try {
 
-        let libreryPath: string = path.join(__dirname, "..", "class"); // Ruta donde se encuentran definidas las clases
+        let libreryPath: string = path.join(__dirname, "..", "libraryWIO", "class"); // Ruta donde se encuentran definidas las clases
         let dirFilePath: string; // Ruta para saber si es un archivo o un directorio
         let file: string; // Nombre de la clase
 

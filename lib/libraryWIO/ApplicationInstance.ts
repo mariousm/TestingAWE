@@ -1,5 +1,6 @@
 import { Application, SpectronClient } from 'spectron';
 import { join } from "path";
+import { Cookie } from 'webdriverio';
 
 export class ApplicationInstance {
 
@@ -50,7 +51,7 @@ export class ApplicationInstance {
     }
 
     // Guardar una captura de pantalla de una elmento a un archivo PNG
-    async saveScreenhot(selector: string, filename: string) {
+    public async saveScreenhot(selector: string, filename: string) {
         return await this.getClient().$(selector).saveScreenshot(filename);
     }
 }

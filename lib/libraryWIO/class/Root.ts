@@ -1,7 +1,6 @@
 // IMPORTACIONES
 import { ApplicationInstance } from "../ApplicationInstance";
 import { SpectronClient } from 'spectron';
-import { CssProperty } from "webdriverio";
 
 export abstract class Root {
     // ATRIBUTOS

@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const ValueAbstract_1 = require("../abstractClass/ValueAbstract");
-class Select extends ValueAbstract_1.ValueAbstract {
+const ClickAbstract_1 = require("../abstractClass/ClickAbstract");
+class Select extends ClickAbstract_1.ClickAbstract {
     // ATRIBUTOS
     // CONSTRUCTOR
     constructor(id) {

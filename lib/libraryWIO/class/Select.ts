@@ -1,7 +1,7 @@
 // IMPORTACIONES
-import { ValueAbstract } from "../abstractClass/ValueAbstract";
+import { ClickAbstract } from "../abstractClass/ClickAbstract";
 
-export class Select extends ValueAbstract {
+export class Select extends ClickAbstract {
     // ATRIBUTOS
 
     // CONSTRUCTOR

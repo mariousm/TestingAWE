@@ -1,4 +1,4 @@
-import { ValueSelectedAbstract } from "../abstractClass/ValueSelectedAbstract";
-export declare class Option extends ValueSelectedAbstract {
+import { SelectedClickAbstract } from "../abstractClass/SelectedClickAbstract";
+export declare class Option extends SelectedClickAbstract {
     constructor(id: string);
 }
