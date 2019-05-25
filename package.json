@@ -8,7 +8,7 @@
         "init": "node init.js",
         "prepublish": "npm run build",
         "build": "tsc",
-        "test": "mocha -r ts-node/register test/**/*.ts --timeout 1000000"
+        "test": "mocha -r ts-node/register test/*.ts --timeout 1000000"
     },
     "keywords": [
         "test"

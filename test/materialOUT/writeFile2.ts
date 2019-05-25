@@ -1,0 +1,1 @@
+writeFile2.ts
