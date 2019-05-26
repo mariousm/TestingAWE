@@ -1,0 +1,31 @@
+import { SpectronClient } from 'spectron';
+export declare abstract class Root {
+    protected id: string;
+    constructor(id: string);
+    getClient(): SpectronClient;
+    getSelector(): string;
+    getAttribute(attribute: string): Promise<string>;
+    getHTML(includeSelectorTag?: boolean): Promise<string>;
+    getLocation(axis?: string): Promise<any>;
+    getTagName(): Promise<string>;
+    getElementSize(prop?: string): Promise<number>;
+    getCSSProperty(cssProperty: string): Promise<any>;
+    getCount(selector: string): Promise<number>;
+    getText(): Promise<string>;
+    isEnabled(): Promise<boolean>;
+    isVisible(): Promise<boolean>;
+    isVisibleWithinViewport(): Promise<boolean>;
+    isExisting(): Promise<boolean>;
+    hasFocus(): Promise<boolean>;
+    waitForVisible(miliseconds?: number, reverse?: boolean): Promise<boolean | undefined>;
+    waitForEnabled(miliseconds?: number, reverse?: boolean): Promise<boolean | undefined>;
+    waitForExist(miliseconds?: number, reverse?: boolean): Promise<boolean | undefined>;
+    checkSelector(id: string): boolean;
+    checkAttribute(attributeName: string): Promise<boolean>;
+    checkHTML(html: string, includeSelectorTag?: boolean): Promise<boolean>;
+    checkLocation(x: number, y: number): Promise<boolean>;
+    checkTagNAme(tagName: string): Promise<boolean>;
+    checkElementSize(width: number, height: number): Promise<boolean>;
+    checkCount(number: number, selector: string): Promise<boolean>;
+    checkText(text: string): Promise<boolean>;
+}

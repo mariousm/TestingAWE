@@ -10,7 +10,7 @@ import * as fs from "fs";
 //          path: ruta en la que se encuentra el archivo
 // Salida:
 //          toReturn: contenido del fichero en string
-function jsonToString(path: string): string {
+export function jsonToString(path: string): string {
 
     let toReturn: string = '';
 
@@ -30,7 +30,7 @@ function jsonToString(path: string): string {
 //          nothing: la ruta raíz se desconoce
 // Salida:
 //          path: ruta del proyecto raíz
-function getRootDirectory(): string {
+export function getRootDirectory(): string {
     return path.join(__dirname, "..", "..", "..", "..")
 }
 
@@ -39,7 +39,7 @@ function getRootDirectory(): string {
 //          nothing
 // Salida:
 //          name: nombre del fichero
-function getNameFileConfig(): string {
+export function getNameFileConfig(): string {
     return "aweconfig.json"
 }
 
@@ -50,7 +50,7 @@ function getNameFileConfig(): string {
 //                  raíz de donde esté instalado la toolkit
 // Salida:
 //          generación del fichero aweconfig.json
-function createJson() {
+export function createJson() {
 
     try {
 
@@ -77,7 +77,7 @@ function createJson() {
 //          nothing
 // Salida:
 //          objJson: el objeto JSON
-function getObjJson(): any {
+export function getObjJson(): any {
 
     let objJson: any;
 
@@ -99,7 +99,7 @@ function getObjJson(): any {
 //          nothing
 // Salida:
 //          isCheck: determina si existe el fichero de configuración o no
-function checkExistFile(): boolean {
+export function checkExistFile(): boolean {
 
     let isCheck: boolean = false; // Para determinar si existe el archivo aweconfig.json
 
@@ -124,7 +124,7 @@ function checkExistFile(): boolean {
 //                  en la segunda posición el valor del proyecto Spectron,
 //                  en la tercera posición si existe ignore
 //                  [existAngularPath, existSpectronPath, existIgnore]
-function checkExistProjectProperty(): Array<boolean> {
+export function checkExistProjectProperty(): Array<boolean> {
 
     let isCheck: Array<boolean> = [false, false, false];
 
@@ -140,7 +140,7 @@ function checkExistProjectProperty(): Array<boolean> {
         }
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 
     return isCheck

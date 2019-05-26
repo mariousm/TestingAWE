@@ -1,1 +1,10 @@
+export declare function walkDirSrc(appElectronPath: string, appSpectronPath: string): void;
+export declare function createDirectory(spectronPath: string): void;
+export declare function createFile(file: string, electronPath: string, spectronPath: string): void;
+export declare function checkAppPath(appPath: string): boolean;
+export declare function checkSameRoot(appElectronPath: string, appSpectronPath: string): boolean;
+export declare function checkExistDirectory(path: string): boolean;
+export declare function check(appElectronPath: string, appSpectronPath: string): boolean;
+export declare function pathUnixWindows(appPath: string): string;
+export declare function getHtmlElements(): Array<string>;
 export declare function walkDir(): void;

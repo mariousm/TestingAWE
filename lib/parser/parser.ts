@@ -11,7 +11,8 @@ var htmlparser = require("htmlparser2");
 //          path: ruta del fichero
 //          data: información del fichero
 // Salida:
-function writeFile(path: string, data: string) {
+//function writeFile(path: string, data: string) {
+export function writeFile(path: string, data: string) {
 
     try {
 
@@ -27,7 +28,8 @@ function writeFile(path: string, data: string) {
 //          path: fichero html a parsear
 // Salida:
 //          toReturn: html sin espacios
-function htmlToString(path: string): string {
+// function htmlToString(path: string): string {
+export function htmlToString(path: string): string {
 
     let toReturn: string = '';
 
@@ -47,7 +49,8 @@ function htmlToString(path: string): string {
 //          path: fichero html a parsear
 // Salida:
 //          Array<Array<string>> --> [[tag, id]]
-function parser(path: string): Array<Array<string>> {
+// function parser(path: string): Array<Array<string>> {
+export function parser(path: string): Array<Array<string>> {
 
     let list: Array<Array<string>> = [];
 
@@ -62,7 +65,7 @@ function parser(path: string): Array<Array<string>> {
             onopentag: function (name: string, attribs: { id: string; }) {
                 if (attribs.id !== undefined && attribs.id !== "") { // Comprobamos lo más básico, que tenga definido el id y que no esté vacío
                     if (!regExpr.test(attribs.id)) { // Si el id no tiene ningún espacio, es un id correcto según el estandar (vale todo a excepción de whitespace character)
-                        list.push([name.trim(), attribs.id.trim()]);
+                        list.push([name.toLowerCase().trim(), attribs.id.toLowerCase().trim()]);
                     }
                 }
             }
@@ -82,7 +85,8 @@ function parser(path: string): Array<Array<string>> {
 //          tag: nombre de la etiqueta
 // Salida:
 //          nameClass: nombre de la clase de ese tag
-function nameTagClass(tag: string): string {
+// function nameTagClass(tag: string): string {
+export function nameTagClass(tag: string): string {
 
     let nameClass: string = "";
 
@@ -109,7 +113,8 @@ function nameTagClass(tag: string): string {
 //          id: nombre del id del elemento
 // Salida:
 //          varFunc: nombre de la variable o de la función
-function nameVarFunc(id: string): string {
+//function nameVarFunc(id: string): string {
+export function nameVarFunc(id: string): string {
 
     let varFunc: string = "";
 
@@ -147,7 +152,8 @@ function nameVarFunc(id: string): string {
 //          params: Array<string> -> [head, nameId]
 //                  en la primera posición guardamos la signatura del método (sólo los parámetros)
 //                  en la segunda posición guardamos el nombre del id
-function paramsIdTag(id: string): Array<string> {
+// function paramsIdTag(id: string): Array<string> {
+export function paramsIdTag(id: string): Array<string> {
 
     let params: Array<string> = []; // Array que devolvemos con la cabecera y el nombre del id
 

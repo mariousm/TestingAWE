@@ -19,6 +19,7 @@ function jsonToString(path) {
     }
     return toReturn.trim();
 }
+exports.jsonToString = jsonToString;
 // Devuelve la ruta del proyecto raíz en el que está instalado el módulo
 // Entrada:
 //          nothing: la ruta raíz se desconoce
@@ -27,6 +28,7 @@ function jsonToString(path) {
 function getRootDirectory() {
     return path.join(__dirname, "..", "..", "..", "..");
 }
+exports.getRootDirectory = getRootDirectory;
 // Devuelve el nombre del archivo de configuración
 // Entrada:
 //          nothing
@@ -35,6 +37,7 @@ function getRootDirectory() {
 function getNameFileConfig() {
     return "aweconfig.json";
 }
+exports.getNameFileConfig = getNameFileConfig;
 // Método que crea el fichero JSON por defecto, es decir, si no existe
 // crea un esqueleto, y es el usuario quién lo debe modificar
 // Entrada:
@@ -59,6 +62,7 @@ function createJson() {
         console.log(error);
     }
 }
+exports.createJson = createJson;
 // Método que generar el objeto JSON
 // Entrada:
 //          nothing
@@ -77,6 +81,7 @@ function getObjJson() {
     }
     return objJson;
 }
+exports.getObjJson = getObjJson;
 // Método que comprueba que existe el fichero aweconfig.json en la raíz del proyecto Spectron
 // Entrada:
 //          nothing
@@ -95,6 +100,7 @@ function checkExistFile() {
     }
     return isCheck;
 }
+exports.checkExistFile = checkExistFile;
 // Comprueba si existen la propiedades  del fichero aweconfig.json
 // Entrada:
 //          nothing
@@ -118,10 +124,11 @@ function checkExistProjectProperty() {
         }
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
     }
     return isCheck;
 }
+exports.checkExistProjectProperty = checkExistProjectProperty;
 function checkAweconfig() {
     let isCheck = true;
     let isChechProperty = [];

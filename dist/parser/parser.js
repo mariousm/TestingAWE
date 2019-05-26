@@ -10,6 +10,7 @@ var htmlparser = require("htmlparser2");
 //          path: ruta del fichero
 //          data: información del fichero
 // Salida:
+//function writeFile(path: string, data: string) {
 function writeFile(path, data) {
     try {
         fs_1.writeFileSync(path, data);
@@ -18,11 +19,13 @@ function writeFile(path, data) {
         console.log(error);
     }
 }
+exports.writeFile = writeFile;
 // Convierte el HTML en un String sin espacios entre etiquetas
 // Entrada:
 //          path: fichero html a parsear
 // Salida:
 //          toReturn: html sin espacios
+// function htmlToString(path: string): string {
 function htmlToString(path) {
     let toReturn = '';
     try {
@@ -33,11 +36,13 @@ function htmlToString(path) {
     }
     return toReturn.trim();
 }
+exports.htmlToString = htmlToString;
 // Devuelve el tipo de etiqueta HTML que lee junto con su id
 // Entrada:
 //          path: fichero html a parsear
 // Salida:
 //          Array<Array<string>> --> [[tag, id]]
+// function parser(path: string): Array<Array<string>> {
 function parser(path) {
     let list = [];
     try {
@@ -48,7 +53,7 @@ function parser(path) {
             onopentag: function (name, attribs) {
                 if (attribs.id !== undefined && attribs.id !== "") { // Comprobamos lo más básico, que tenga definido el id y que no esté vacío
                     if (!regExpr.test(attribs.id)) { // Si el id no tiene ningún espacio, es un id correcto según el estandar (vale todo a excepción de whitespace character)
-                        list.push([name.trim(), attribs.id.trim()]);
+                        list.push([name.toLowerCase().trim(), attribs.id.toLowerCase().trim()]);
                     }
                 }
             }
@@ -61,11 +66,13 @@ function parser(path) {
     }
     return list;
 }
+exports.parser = parser;
 // Devuelve el nombre de la clase HTML correspondiente a ese tag
 // Entrada:
 //          tag: nombre de la etiqueta
 // Salida:
 //          nameClass: nombre de la clase de ese tag
+// function nameTagClass(tag: string): string {
 function nameTagClass(tag) {
     let nameClass = "";
     try {
@@ -81,11 +88,13 @@ function nameTagClass(tag) {
     }
     return nameClass;
 }
+exports.nameTagClass = nameTagClass;
 // Devuelve el nombre de la variable o de la función sin caracteres especiales
 // Entrada:
 //          id: nombre del id del elemento
 // Salida:
 //          varFunc: nombre de la variable o de la función
+//function nameVarFunc(id: string): string {
 function nameVarFunc(id) {
     let varFunc = "";
     try {
@@ -111,6 +120,7 @@ function nameVarFunc(id) {
     }
     return varFunc;
 }
+exports.nameVarFunc = nameVarFunc;
 // Devuelve la cabecera de la signatura, y el nombre del id cuando éste sea dinámico
 // Entrada:
 //          id: nombre del id del elemento
@@ -118,6 +128,7 @@ function nameVarFunc(id) {
 //          params: Array<string> -> [head, nameId]
 //                  en la primera posición guardamos la signatura del método (sólo los parámetros)
 //                  en la segunda posición guardamos el nombre del id
+// function paramsIdTag(id: string): Array<string> {
 function paramsIdTag(id) {
     let params = []; // Array que devolvemos con la cabecera y el nombre del id
     try {
@@ -173,6 +184,7 @@ function paramsIdTag(id) {
     }
     return params;
 }
+exports.paramsIdTag = paramsIdTag;
 // Método que genera el fichero AplicationsInstance.awe.ts
 // Entrada:
 //          appElectronPath: ruta del proyecto Angular/Electron
