@@ -31,6 +31,7 @@ function walkDirSrc(appElectronPath, appSpectronPath) {
         console.log(error);
     }
 }
+exports.walkDirSrc = walkDirSrc;
 ;
 // Método que crea el directorio de forma paralela desde el proyecto Angular/Electron al proyecto Spectron
 // USADO SOLO PARA LA CREACIÓN DE LA CARPETA testingAWE en el proyecto Spectron
@@ -50,6 +51,7 @@ function createDirectory(spectronPath) {
         console.log(error);
     }
 }
+exports.createDirectory = createDirectory;
 // Método que crea el fichero de la toolkit por cada html que encontramos
 // Entrada:
 //          file: nombre del fichero
@@ -85,6 +87,7 @@ function createFile(file, electronPath, spectronPath) {
         console.log(error);
     }
 }
+exports.createFile = createFile;
 // Método que nos permite determinar si la ruta de la aplicación spectron o electron
 // es la raíz del proyecto
 // Entrada:
@@ -107,6 +110,7 @@ function checkAppPath(appPath) {
     }
     return isCheck;
 }
+exports.checkAppPath = checkAppPath;
 // Método que permite determinar si el proyecto Angular/Electron y el proyecto Spectron
 // están en la misma carpte, es decir, al mismo nivel
 // Entrada:
@@ -137,6 +141,7 @@ function checkSameRoot(appElectronPath, appSpectronPath) {
     }
     return isCheck;
 }
+exports.checkSameRoot = checkSameRoot;
 // Método que comprueba que exite el directorio pasado por parámetro
 // Entrada:
 //          path: ruta del directorio
@@ -153,6 +158,7 @@ function checkExistDirectory(path) {
     }
     return isCheck;
 }
+exports.checkExistDirectory = checkExistDirectory;
 // Método que realiza todas las  validaciones de la automatización
 // Entrada:
 //          appElectronPath: ruta del proyecto Angular/Electron
@@ -192,40 +198,42 @@ function check(appElectronPath, appSpectronPath) {
     }
     return isCheck;
 }
+exports.check = check;
 // Método que convierte el path al estilo del sistema operativo que se está ejecutando,
 // Entrada:
-//          path: ruta a convertir
+//          appPath: ruta a convertir
 // Salida:
 //          pathUnixWindows: ruta con el formato de Unix
-function pathUnixWindows(path) {
-    let pathUnixWindows = "";
+function pathUnixWindows(appPath) {
+    let appPathUnixWindows = "";
     try {
         if (process.platform === "win32") { // Si se ejecuta en windows
-            if (path.indexOf("/") !== -1) { // Si trae el path de Unix hay que convertir
-                for (let i = 0; i < path.length; ++i) {
-                    path[i] === "/" ? pathUnixWindows += "\\" : pathUnixWindows += path[i];
+            if (appPath.indexOf("/") !== -1) { // Si trae el appPath de Unix hay que convertir
+                for (let i = 0; i < appPath.length; ++i) {
+                    appPath[i] === "/" ? appPathUnixWindows += "\\" : appPathUnixWindows += appPath[i];
                 }
             }
             else {
-                pathUnixWindows = path;
+                appPathUnixWindows = appPath;
             }
         }
         else { // Si se ejecuta en Unix
-            if (path.indexOf("\\") !== -1) { // Si trae el path de Windows hay que convertir
-                for (let i = 0; i < path.length; ++i) {
-                    path[i] === "\\" ? pathUnixWindows += "/" : pathUnixWindows += path[i];
+            if (appPath.indexOf("\\") !== -1) { // Si trae el appPath de Windows hay que convertir
+                for (let i = 0; i < appPath.length; ++i) {
+                    appPath[i] === "\\" ? appPathUnixWindows += "/" : appPathUnixWindows += appPath[i];
                 }
             }
             else {
-                pathUnixWindows = path;
+                appPathUnixWindows = appPath;
             }
         }
     }
     catch (error) {
         console.log(error);
     }
-    return pathUnixWindows;
+    return appPathUnixWindows;
 }
+exports.pathUnixWindows = pathUnixWindows;
 // Método que devuelve en una lista, los elementos HTML de la librería que están creados
 // Entrada:
 //
@@ -254,6 +262,7 @@ function getHtmlElements() {
     }
     return htmlElements;
 }
+exports.getHtmlElements = getHtmlElements;
 // Método que va a recorrer la estructura principal del proyecto Angular/Electron
 // para detectar si es un proyecto Electron y si tiene la carpeta src
 // Entrada:
@@ -267,8 +276,8 @@ function walkDir() {
         if (configuration_1.checkAweconfig()) {
             // Obtenemos las rutas de los proyectos del fichero aweconfig.json
             let directories = configuration_1.getProjectPath();
-            let appElectronPath = directories[0];
-            let appSpectronPath = directories[1];
+            let appElectronPath = directories[0].toString();
+            let appSpectronPath = directories[1].toString();
             // Obtenemos las carpetas a ignorar
             let ignore = configuration_1.getIgnore();
             // Llamo a que convierta el path, para el checkRoot, ya que compruebo todo el string con slash incluidos

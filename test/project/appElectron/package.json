@@ -1,0 +1,37 @@
+{
+    "name": "testing-awe",
+    "version": "0.1.0",
+    "description": "",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "init": "node init.js",
+        "prepublish": "npm run build",
+        "build": "tsc",
+        "test": "mocha -r ts-node/register test/*.ts --timeout 1000000"
+    },
+    "keywords": [
+        "test"
+    ],
+    "author": "Mario Ubierna",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/electron": "^1.6.10",
+        "@types/htmlparser2": "^3.10.0",
+        "@types/mocha": "^5.2.6",
+        "@types/webdriverio": "^4.8.0",
+        "chai": "^4.2.0",
+        "electron": "^4.0.3",
+        "htmlparser2": "^3.10.1",
+        "mocha": "^5.2.0",
+        "spectron": "^5.0.0",
+        "ts-node": "^8.1.1",
+        "typescript": "^3.4.5"
+    },
+    "dependencies": {
+        "@types/fs-extra": "^5.0.5",
+        "fs-extra": "^7.0.1",
+        "webdriverio": "^4.13.0"
+    }
+}

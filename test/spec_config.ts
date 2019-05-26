@@ -175,29 +175,29 @@ describe("UnitTest CONFIGURATION", () => {
 
     })
 
-    it.only("checkExistFile FAIL", () => {
+    // it.only("checkExistFile FAIL", () => {
 
-        // Comprobamos que si le pasamos un number sigue funcionando
-        // Si existe el archivo lo borramos
-        let ruta = path.join(__dirname, "..", "..", "..", "aweconfig.json");
-        remove(ruta);
-        // Lo volvemos a crear
-        assert.equal(config.checkExistFile(123), false);
-        config.createJson();
-        assert.equal(config.checkExistFile(123), true);
+    //     // Comprobamos que si le pasamos un number sigue funcionando
+    //     // Si existe el archivo lo borramos
+    //     let ruta = path.join(__dirname, "..", "..", "..", "aweconfig.json");
+    //     remove(ruta);
+    //     // Lo volvemos a crear
+    //     assert.equal(config.checkExistFile(123), false);
+    //     config.createJson();
+    //     assert.equal(config.checkExistFile(123), true);
 
-        // Comprobamos que si le pasamos un string sigue funcionando
-        // Si existe el archivo lo borramos
-        ruta = path.join(__dirname, "..", "..", "..", "aweconfig.json");
-        remove(ruta);
-        // Lo volvemos a crear
-        assert.equal(config.checkExistFile("hola"), false);
-        config.createJson();
-        assert.equal(config.checkExistFile("hola"), true);
+    //     // Comprobamos que si le pasamos un string sigue funcionando
+    //     // Si existe el archivo lo borramos
+    //     ruta = path.join(__dirname, "..", "..", "..", "aweconfig.json");
+    //     remove(ruta);
+    //     // Lo volvemos a crear
+    //     assert.equal(config.checkExistFile("hola"), false);
+    //     config.createJson();
+    //     assert.equal(config.checkExistFile("hola"), true);
 
-        // Esta situciones no se van a dar, porque es un método que solo es usado por mí, y solo le llamo
-        // sin parámetros, por lo que siempre va a comprobar en la raíz del proyecto Spectron si está el fichero
-    });
+    //     // Esta situciones no se van a dar, porque es un método que solo es usado por mí, y solo le llamo
+    //     // sin parámetros, por lo que siempre va a comprobar en la raíz del proyecto Spectron si está el fichero
+    // });
 
     it.only("checkExistProjectProperty CORRECT", () => {
 

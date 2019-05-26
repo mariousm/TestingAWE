@@ -12,7 +12,7 @@ import { checkAweconfig, getProjectPath, getIgnore } from '../config/configurati
 //          appSpectronPath: ruta del proyecto de Spectron
 // Salida:
 //          
-function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
+export function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
 
     try {
 
@@ -42,7 +42,7 @@ function walkDirSrc(appElectronPath: string, appSpectronPath: string) {
 //          spectronPath: ruta del proyecto Spectron
 // Salida:
 //          generación del directorio
-function createDirectory(spectronPath: string) {
+export function createDirectory(spectronPath: string) {
 
     try {
 
@@ -64,7 +64,7 @@ function createDirectory(spectronPath: string) {
 //          spectronPath: ruta del proyecto Spectron en el que vamos a generar el fichero
 // Salida:
 //          generación del fichero
-function createFile(file: string, electronPath: string, spectronPath: string) {
+export function createFile(file: string, electronPath: string, spectronPath: string) {
 
     try {
 
@@ -105,7 +105,7 @@ function createFile(file: string, electronPath: string, spectronPath: string) {
 //          appPath: ruta del proyecto Spectron o Electron
 // Salida:
 //          isCheck: nos permite saber si es correcto o no
-function checkAppPath(appPath: string): boolean {
+export function checkAppPath(appPath: string): boolean {
 
     let isCheck: boolean = false; // Para determinar si la ruta es la raíz del proyecto
     let validations: number = 0; // Variable para comprobar si cumple todos los requisitos
@@ -132,7 +132,7 @@ function checkAppPath(appPath: string): boolean {
 //          appSpectronPath: ruta del proyecto Spectron
 // Salida:
 //          isCheck: nos permite saber si es correcto o no
-function checkSameRoot(appElectronPath: string, appSpectronPath: string): boolean {
+export function checkSameRoot(appElectronPath: string, appSpectronPath: string): boolean {
 
     let isCheck: boolean = false; // Para determinar si ambos proyecto están a la misma altura
     let indexLastSlashElectron: number = 0;
@@ -165,7 +165,7 @@ function checkSameRoot(appElectronPath: string, appSpectronPath: string): boolea
 //          path: ruta del directorio
 // Salida:
 //          isCheck: nos permite saber si existe o no
-function checkExistDirectory(path: string): boolean {
+export function checkExistDirectory(path: string): boolean {
 
     let isCheck = false;
 
@@ -186,7 +186,7 @@ function checkExistDirectory(path: string): boolean {
 //          appSpectronPath: ruta del proyecto Spectron
 // Salida:
 //          isCheck: nos permite saber si es correcto o no
-function check(appElectronPath: string, appSpectronPath: string): boolean {
+export function check(appElectronPath: string, appSpectronPath: string): boolean {
 
     let isCheck = true;
 
@@ -228,30 +228,30 @@ function check(appElectronPath: string, appSpectronPath: string): boolean {
 
 // Método que convierte el path al estilo del sistema operativo que se está ejecutando,
 // Entrada:
-//          path: ruta a convertir
+//          appPath: ruta a convertir
 // Salida:
 //          pathUnixWindows: ruta con el formato de Unix
-function pathUnixWindows(path: string): string {
+export function pathUnixWindows(appPath: string): string {
 
-    let pathUnixWindows: string = "";
+    let appPathUnixWindows: string = "";
 
     try {
 
         if (process.platform === "win32") { // Si se ejecuta en windows
-            if (path.indexOf("/") !== -1) { // Si trae el path de Unix hay que convertir
-                for (let i = 0; i < path.length; ++i) {
-                    path[i] === "/" ? pathUnixWindows += "\\" : pathUnixWindows += path[i];
+            if (appPath.indexOf("/") !== -1) { // Si trae el appPath de Unix hay que convertir
+                for (let i = 0; i < appPath.length; ++i) {
+                    appPath[i] === "/" ? appPathUnixWindows += "\\" : appPathUnixWindows += appPath[i];
                 }
             } else {
-                pathUnixWindows = path;
+                appPathUnixWindows = appPath;
             }
         } else { // Si se ejecuta en Unix
-            if (path.indexOf("\\") !== -1) { // Si trae el path de Windows hay que convertir
-                for (let i = 0; i < path.length; ++i) {
-                    path[i] === "\\" ? pathUnixWindows += "/" : pathUnixWindows += path[i];
+            if (appPath.indexOf("\\") !== -1) { // Si trae el appPath de Windows hay que convertir
+                for (let i = 0; i < appPath.length; ++i) {
+                    appPath[i] === "\\" ? appPathUnixWindows += "/" : appPathUnixWindows += appPath[i];
                 }
             } else {
-                pathUnixWindows = path;
+                appPathUnixWindows = appPath;
             }
         }
 
@@ -259,7 +259,7 @@ function pathUnixWindows(path: string): string {
         console.log(error);
     }
 
-    return pathUnixWindows
+    return appPathUnixWindows
 }
 
 // Método que devuelve en una lista, los elementos HTML de la librería que están creados
@@ -267,7 +267,7 @@ function pathUnixWindows(path: string): string {
 //
 // Salida:
 //          htmlElements: lista que contiene los elementos HTML de la librería que están creados
-function getHtmlElements(): Array<string> {
+export function getHtmlElements(): Array<string> {
 
     let htmlElements: Array<string> = new Array<string>();
 
@@ -314,8 +314,8 @@ export function walkDir() {
         if (checkAweconfig()) {
             // Obtenemos las rutas de los proyectos del fichero aweconfig.json
             let directories: Array<string> = getProjectPath();
-            let appElectronPath: string = directories[0];
-            let appSpectronPath: string = directories[1];
+            let appElectronPath: string = directories[0].toString();
+            let appSpectronPath: string = directories[1].toString();
 
             // Obtenemos las carpetas a ignorar
             let ignore = getIgnore();
