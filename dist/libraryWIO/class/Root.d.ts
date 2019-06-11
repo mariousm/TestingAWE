@@ -1,5 +1,5 @@
 import { SpectronClient } from 'spectron';
-export declare abstract class Root {
+export declare class Root {
     protected id: string;
     constructor(id: string);
     getClient(): SpectronClient;
@@ -21,10 +21,10 @@ export declare abstract class Root {
     waitForEnabled(miliseconds?: number, reverse?: boolean): Promise<boolean | undefined>;
     waitForExist(miliseconds?: number, reverse?: boolean): Promise<boolean | undefined>;
     checkSelector(id: string): boolean;
-    checkAttribute(attributeName: string): Promise<boolean>;
+    checkAttribute(attributeName: string, value: string): Promise<boolean>;
     checkHTML(html: string, includeSelectorTag?: boolean): Promise<boolean>;
     checkLocation(x: number, y: number): Promise<boolean>;
-    checkTagNAme(tagName: string): Promise<boolean>;
+    checkTagName(tagName: string): Promise<boolean>;
     checkElementSize(width: number, height: number): Promise<boolean>;
     checkCount(number: number, selector: string): Promise<boolean>;
     checkText(text: string): Promise<boolean>;

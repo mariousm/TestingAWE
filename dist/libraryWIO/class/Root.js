@@ -30,6 +30,8 @@ class Root {
             let attributeName = "";
             try {
                 attributeName = yield this.getClient().getAttribute(this.id, attribute);
+                if (attributeName === null)
+                    attributeName = "";
             }
             catch (error) {
                 console.log(error);
@@ -100,13 +102,8 @@ class Root {
         return __awaiter(this, void 0, void 0, function* () {
             let count = 0;
             try {
-                if (selector.length !== 0) {
+                if (selector.length > 0) {
                     count = yield this.getClient().elements(selector).then((res) => {
-                        return res.value.length;
-                    });
-                }
-                else {
-                    count = yield this.getClient().elements(this.id).then((res) => {
                         return res.value.length;
                     });
                 }
@@ -252,13 +249,13 @@ class Root {
         return check;
     }
     // Método para comprobar un atributo
-    checkAttribute(attributeName) {
+    checkAttribute(attributeName, value) {
         return __awaiter(this, void 0, void 0, function* () {
             let check = false;
             let attribute = "";
             try {
                 attribute = yield this.getAttribute(attributeName);
-                if (attribute === attributeName) {
+                if (attribute === value) {
                     check = true;
                 }
             }
@@ -307,7 +304,7 @@ class Root {
         });
     }
     // Método para comprobar el nombre de la etiqueta HTML
-    checkTagNAme(tagName) {
+    checkTagName(tagName) {
         return __awaiter(this, void 0, void 0, function* () {
             let check = false;
             let tag = "";

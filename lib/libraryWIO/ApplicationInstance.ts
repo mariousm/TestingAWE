@@ -1,6 +1,5 @@
 import { Application, SpectronClient } from 'spectron';
 import { join } from "path";
-import { Cookie } from 'webdriverio';
 
 export class ApplicationInstance {
 

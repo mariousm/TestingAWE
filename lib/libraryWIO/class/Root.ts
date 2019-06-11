@@ -2,7 +2,7 @@
 import { ApplicationInstance } from "../ApplicationInstance";
 import { SpectronClient } from 'spectron';
 
-export abstract class Root {
+export class Root {
     // ATRIBUTOS
     protected id: string;
 
@@ -31,6 +31,7 @@ export abstract class Root {
 
         try {
             attributeName = await this.getClient().getAttribute(this.id, attribute);
+            if (attributeName === null) attributeName = "";
 
         } catch (error) {
             console.log(error);
@@ -104,13 +105,8 @@ export abstract class Root {
         let count: number = 0;
 
         try {
-            if (selector.length !== 0) {
+            if (selector.length > 0) {
                 count = await this.getClient().elements(selector).then((res) => {
-                    return res.value.length;
-                });
-
-            } else {
-                count = await this.getClient().elements(this.id).then((res) => {
                     return res.value.length;
                 });
             }
@@ -266,13 +262,13 @@ export abstract class Root {
     }
 
     // Método para comprobar un atributo
-    async checkAttribute(attributeName: string) {
+    async checkAttribute(attributeName: string, value: string) {
         let check: boolean = false;
         let attribute: string = "";
 
         try {
             attribute = await this.getAttribute(attributeName);
-            if (attribute === attributeName) {
+            if (attribute === value) {
                 check = true;
             }
 
@@ -324,7 +320,7 @@ export abstract class Root {
     }
 
     // Método para comprobar el nombre de la etiqueta HTML
-    async checkTagNAme(tagName: string) {
+    async checkTagName(tagName: string) {
         let check: boolean = false;
         let tag: string = "";
 
