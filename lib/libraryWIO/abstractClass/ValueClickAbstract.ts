@@ -1,14 +1,31 @@
 // IMPORTACIONES
 import { Root } from "../class/Root";
-import { Selected } from "../interfaces/Selected";
 import { Click } from "../interfaces/Click";
 
-export abstract class SelectedClickAbstract extends Root implements Selected, Click {
+export abstract class ValueClickAbstract extends Root implements Click {
 
-    // Devuelve verdadero si una Opcion o un Input es seleccionado
-    async isSelected() {
+    // Método para obtener el valor
+    async getValue() {
         try {
-            return await this.getClient().isSelected(this.id);
+            return await this.getClient().getValue(this.id);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // Método para chequear que es correcto el valor
+    async checkValue(value: string) {
+        try {
+
+            let check: boolean = false;
+            let valor = await this.getValue();
+
+            if (valor === value) {
+                check = true;
+            }
+
+            return check;
+
         } catch (error) {
             console.log(error);
         }

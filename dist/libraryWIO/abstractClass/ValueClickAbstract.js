@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
 const Root_1 = require("../class/Root");
-class ValueAbstract extends Root_1.Root {
+class ValueClickAbstract extends Root_1.Root {
     // Método para obtener el valor
     getValue() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -38,5 +38,38 @@ class ValueAbstract extends Root_1.Root {
             }
         });
     }
+    // Método para pulsar un botón
+    click() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.getClient().click(this.id).pause(1000);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    // Método para realizar doble click
+    doubleClick() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.getClient().doubleClick(this.id).pause(1000);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    // Método para realizar click con el botón derecho del ratón
+    rightClick() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.getClient().rightClick(this.id).pause(1000);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
 }
-exports.ValueAbstract = ValueAbstract;
+exports.ValueClickAbstract = ValueClickAbstract;

@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class Datalist extends Root {
+export class Article extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR
@@ -10,4 +10,5 @@ export class Datalist extends Root {
     }
 
     // MÉTODOS
+
 }

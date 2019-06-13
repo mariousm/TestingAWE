@@ -1,4 +1,4 @@
 import { Root } from "./Root";
-export declare class Datalist extends Root {
+export declare class Article extends Root {
     constructor(id: string);
 }

@@ -1,7 +1,7 @@
 // IMPORTACIONES
-import { Root } from "./Root";
+import { ValueAbstract } from "../abstractClass/ValueAbstract";
 
-export class Li extends Root {
+export class Li extends ValueAbstract {
     // ATRIBUTOS
 
     // CONSTRUCTOR

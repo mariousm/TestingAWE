@@ -1,6 +1,6 @@
 /// <reference types="webdriverio" />
-import { ClickAbstract } from "../abstractClass/ClickAbstract";
-export declare class Select extends ClickAbstract {
+import { ValueClickAbstract } from "../abstractClass/ValueClickAbstract";
+export declare class Select extends ValueClickAbstract {
     constructor(id: string);
     selectByIndex(index: number): Promise<WebdriverIO.RawResult<null> | undefined>;
     selectByVisibleText(text: string): Promise<WebdriverIO.RawResult<null> | undefined>;

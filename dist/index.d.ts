@@ -2,6 +2,7 @@ export { ApplicationInstance } from './libraryWIO/ApplicationInstance';
 export { A } from './libraryWIO/class/A';
 export { Abbr } from './libraryWIO/class/Abbr';
 export { Address } from './libraryWIO/class/Address';
+export { Article } from './libraryWIO/class/Article';
 export { Audio } from './libraryWIO/class/Audio';
 export { B } from './libraryWIO/class/B';
 export { Base } from './libraryWIO/class/Base';

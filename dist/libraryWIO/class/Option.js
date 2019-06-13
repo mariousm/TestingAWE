@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const SelectedClickAbstract_1 = require("../abstractClass/SelectedClickAbstract");
-class Option extends SelectedClickAbstract_1.SelectedClickAbstract {
+const ValueSelectedClickAbstract_1 = require("../abstractClass/ValueSelectedClickAbstract");
+class Option extends ValueSelectedClickAbstract_1.ValueSelectedClickAbstract {
     // ATRIBUTOS
     // CONSTRUCTOR
     constructor(id) {
