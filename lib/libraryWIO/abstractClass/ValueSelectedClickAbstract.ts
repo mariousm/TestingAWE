@@ -1,28 +1,10 @@
 // IMPORTACIONES
 import { Root } from "../class/Root";
-import { Value } from "../interfaces/Value";
-import { Selected } from "../interfaces/Selected";
-import { Click } from "../interfaces/Click";
+import { IValue } from "../interfaces/IValue";
+import { ISelected } from "../interfaces/ISelected";
+import { IClick } from "../interfaces/IClick";
 
-export abstract class ValueSelectedClickAbstract extends Root implements Value, Selected, Click {
-
-    // Método para establecer un valor
-    async addValue(value: string) {
-        try {
-            return await this.getClient().addValue(this.id, value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    // Método para establecer un valor (borra lo que había)
-    async setValue(value: string) {
-        try {
-            return await this.getClient().setValue(this.id, value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+export abstract class ValueSelectedClickAbstract extends Root implements IValue, ISelected, IClick {
 
     // Método para limpiar el valor
     async clearValue() {

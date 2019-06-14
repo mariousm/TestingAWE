@@ -11,28 +11,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
 const Root_1 = require("../class/Root");
 class ValueSelectedClickAbstract extends Root_1.Root {
-    // Método para establecer un valor
-    addValue(value) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.getClient().addValue(this.id, value);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    // Método para establecer un valor (borra lo que había)
-    setValue(value) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.getClient().setValue(this.id, value);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
     // Método para limpiar el valor
     clearValue() {
         return __awaiter(this, void 0, void 0, function* () {

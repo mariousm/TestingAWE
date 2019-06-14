@@ -1,8 +1,8 @@
 // IMPORTACIONES
 import { Root } from "../class/Root";
-import { Click } from "../interfaces/Click";
+import { IClick } from "../interfaces/IClick";
 
-export abstract class ClickAbstract extends Root implements Click {
+export abstract class ClickAbstract extends Root implements IClick {
 
     // Método para pulsar un botón
     async click() {

@@ -1,8 +1,9 @@
 // IMPORTACIONES
 import { Root } from "../class/Root";
-import { Click } from "../interfaces/Click";
+import { IClick } from "../interfaces/IClick";
+import { IValue } from "../interfaces/IValue";
 
-export abstract class ValueClickAbstract extends Root implements Click {
+export abstract class ValueClickAbstract extends Root implements IValue, IClick {
 
     // Método para obtener el valor
     async getValue() {

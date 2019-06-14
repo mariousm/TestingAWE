@@ -1,6 +1,6 @@
 // Interfaz para las clases Option y Input
 
-export interface Selected {
+export interface ISelected {
 
     isSelected(): any
 }
