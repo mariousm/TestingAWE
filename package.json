@@ -15,23 +15,22 @@
     ],
     "author": "Mario Ubierna",
     "license": "ISC",
-    "devDependencies": {
+    "devDependencies": {},
+    "dependencies": {
         "@types/chai": "^4.1.7",
         "@types/electron": "^1.6.10",
+        "@types/fs-extra": "^5.0.5",
         "@types/htmlparser2": "^3.10.0",
         "@types/mocha": "^5.2.6",
         "@types/webdriverio": "^4.8.0",
         "chai": "^4.2.0",
         "electron": "^4.0.3",
+        "fs-extra": "^7.0.1",
         "htmlparser2": "^3.10.1",
         "mocha": "^5.2.0",
         "spectron": "^5.0.0",
         "ts-node": "^8.1.1",
-        "typescript": "^3.4.5"
-    },
-    "dependencies": {
-        "@types/fs-extra": "^5.0.5",
-        "fs-extra": "^7.0.1",
+        "typescript": "^3.4.5",
         "webdriverio": "^4.13.0"
     }
 }
