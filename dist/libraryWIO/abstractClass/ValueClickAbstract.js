@@ -10,12 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
 const Root_1 = require("../class/Root");
-class SelectedClickAbstract extends Root_1.Root {
-    // Devuelve verdadero si una Opcion o un Input es seleccionado
-    isSelected() {
+class ValueClickAbstract extends Root_1.Root {
+    // Método para obtener el valor
+    getValue() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.getClient().isSelected(this.id);
+                return yield this.getClient().getValue(this.id);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    // Método para chequear que es correcto el valor
+    checkValue(value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let check = false;
+                let valor = yield this.getValue();
+                if (valor === value) {
+                    check = true;
+                }
+                return check;
             }
             catch (error) {
                 console.log(error);
@@ -56,4 +72,4 @@ class SelectedClickAbstract extends Root_1.Root {
         });
     }
 }
-exports.SelectedClickAbstract = SelectedClickAbstract;
+exports.ValueClickAbstract = ValueClickAbstract;

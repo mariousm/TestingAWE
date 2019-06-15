@@ -1,4 +1,4 @@
-import { Root } from "./Root";
-export declare class Meter extends Root {
+import { ValueAbstract } from "../abstractClass/ValueAbstract";
+export declare class Meter extends ValueAbstract {
     constructor(id: string);
 }

@@ -1,11 +1,9 @@
 /// <reference types="webdriverio" />
 import { Root } from "../class/Root";
-import { Value } from "../interfaces/Value";
-import { Selected } from "../interfaces/Selected";
-import { Click } from "../interfaces/Click";
-export declare abstract class ValueSelectedClickAbstract extends Root implements Value, Selected, Click {
-    addValue(value: string): Promise<WebdriverIO.RawResult<null> | undefined>;
-    setValue(value: string): Promise<WebdriverIO.RawResult<null> | undefined>;
+import { IValue } from "../interfaces/IValue";
+import { ISelected } from "../interfaces/ISelected";
+import { IClick } from "../interfaces/IClick";
+export declare abstract class ValueSelectedClickAbstract extends Root implements IValue, ISelected, IClick {
     clearValue(): Promise<WebdriverIO.RawResult<null> | undefined>;
     getValue(): Promise<string | undefined>;
     checkValue(value: string): Promise<boolean | undefined>;

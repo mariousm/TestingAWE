@@ -1,6 +1,6 @@
 import { Root } from "../class/Root";
-import { Click } from "../interfaces/Click";
-export declare abstract class ClickAbstract extends Root implements Click {
+import { IClick } from "../interfaces/IClick";
+export declare abstract class ClickAbstract extends Root implements IClick {
     click(): Promise<void>;
     doubleClick(): Promise<void>;
     rightClick(): Promise<void>;

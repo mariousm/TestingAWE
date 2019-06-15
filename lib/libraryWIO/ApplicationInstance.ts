@@ -13,7 +13,7 @@ export class ApplicationInstance {
     // CONSTRUCTOR
     private constructor(nameProject: string) {
         this.app = new Application({
-            path: join(__dirname, "..", "..", "node_modules", "electron", "dist", "electron.exe"),
+            path: join(__dirname, "..", "..", "..", "electron", "dist", "electron.exe"),
             args: [join(__dirname, "..", "..", "..", "..", "..", nameProject)]
         });
     }

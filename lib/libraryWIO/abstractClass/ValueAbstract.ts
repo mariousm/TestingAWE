@@ -1,35 +1,8 @@
 // IMPORTACIONES
 import { Root } from "../class/Root";
-import { Value } from "../interfaces/Value";
+import { IValue } from "../interfaces/IValue";
 
-export abstract class ValueAbstract extends Root implements Value {
-
-    // Método para establecer un valor
-    async addValue(value: string) {
-        try {
-            return await this.getClient().addValue(this.id, value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    // Método para establecer un valor (borra lo que había)
-    async setValue(value: string) {
-        try {
-            return await this.getClient().setValue(this.id, value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    // Método para limpiar el valor
-    async clearValue() {
-        try {
-            return await this.getClient().clearElement(this.id);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+export abstract class ValueAbstract extends Root implements IValue {
 
     // Método para obtener el valor
     async getValue() {

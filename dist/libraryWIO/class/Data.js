@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // IMPORTACIONES
-const Root_1 = require("./Root");
-class Data extends Root_1.Root {
+const ValueAbstract_1 = require("../abstractClass/ValueAbstract");
+class Data extends ValueAbstract_1.ValueAbstract {
     // ATRIBUTOS
     // CONSTRUCTOR
     constructor(id) {

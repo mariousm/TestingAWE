@@ -14,7 +14,7 @@ class ApplicationInstance {
     // CONSTRUCTOR
     constructor(nameProject) {
         this.app = new spectron_1.Application({
-            path: path_1.join(__dirname, "..", "..", "node_modules", "electron", "dist", "electron.exe"),
+            path: path_1.join(__dirname, "..", "..", "..", "electron", "dist", "electron.exe"),
             args: [path_1.join(__dirname, "..", "..", "..", "..", "..", nameProject)]
         });
     }

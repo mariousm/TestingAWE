@@ -1,7 +1,7 @@
 // IMPORTACIONES
 import { Root } from "./Root";
 
-export class Script extends Root {
+export class Article extends Root {
     // ATRIBUTOS
 
     // CONSTRUCTOR
