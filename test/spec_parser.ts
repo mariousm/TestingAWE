@@ -1,14 +1,19 @@
 // IMPORTACIONES
-//import { assert } from "chai";
-let assert = require("chai").assert;
-let path = require("path");
-let fs = require("fs");
-let fsExtra = require("fs-extra");
-let parser = require("../dist/parser/parser");
+// let assert = require("chai").assert;
+// let path = require("path");
+// let fs = require("fs");
+// let fsExtra = require("fs-extra");
+// let parser = require("../dist/parser/parser");
+import  {assert } from "chai";
+import * as path from "path";
+import * as fs from "fs";
+import * as fsExtra from "fs-extra";
+import * as config from "../dist/config/configuration";
+import * as parser from "../dist/parser/parser";
 
 
 //
-function remove(ruta) {
+function remove(ruta: string) {
     let bool = false;
 
     try {
@@ -30,7 +35,7 @@ function remove(ruta) {
 }
 
 //
-function exist(ruta) {
+function exist(ruta: string) {
     return fs.existsSync(ruta);
 }
 

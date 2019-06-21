@@ -1,12 +1,17 @@
 // IMPORTACIONES
-let assert = require("chai").assert;
-let path = require("path");
-let fs = require("fs");
-let fsExtra = require("fs-extra");
-let config = require("../dist/config/configuration");
+// let assert = require("chai").assert;
+// let path = require("path");
+// let fs = require("fs");
+// let fsExtra = require("fs-extra");
+// let config = require("../dist/config/configuration");
+import {assert } from "chai";
+import * as path from "path";
+import * as fs from "fs";
+import * as fsExtra from "fs-extra";
+import * as config from "../dist/config/configuration";
 
 
-function remove(ruta) {
+function remove(ruta: string) {
     let bool = false;
 
     try {

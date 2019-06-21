@@ -14,7 +14,7 @@
         "test"
     ],
     "author": "Mario Ubierna",
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {},
     "dependencies": {
         "@types/chai": "^4.1.7",
