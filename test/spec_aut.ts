@@ -6,7 +6,7 @@ let fsExtra = require("fs-extra");
 let aut = require("../dist/aut/automation");
 
 
-function remove(ruta: string) {
+function remove(ruta) {
     let bool = false;
 
     try {
