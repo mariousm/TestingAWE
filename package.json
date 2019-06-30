@@ -1,7 +1,7 @@
 {
     "name": "testing-awe",
-    "version": "0.2.0",
-    "description": "",
+    "version": "1.0.0",
+    "description": "TestingAWE proporciona todo lo necesario para desarrollar nuestros tests de una forma rápida, simple y sencilla",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
@@ -14,7 +14,8 @@
         "Test",
         "Test structure",
         "Automation",
-        "Test simplification"
+        "Test simplification",
+        "Angular/Electron desktop applications"
     ],
     "author": "Mario Ubierna San Mamés",
     "license": "MIT",
