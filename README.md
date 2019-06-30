@@ -1,10 +1,10 @@
 ---  
 
-![](https://gitlab.com/mus0007/prueba1/raw/master/Recursos/Logo+Cabecera.png)
-
-TestingAWE proporciona todo lo necesario para desarrollar nuestros tests de una forma rápida, simple y sencilla.  
+![](https://gitlab.com/mus0007/prueba1/raw/master/Recursos/Logo+Cabecera.png)  
 
 ---
+
+TestingAWE proporciona todo lo necesario para desarrollar nuestros tests de una forma rápida, simple y sencilla.
 
 <a href="https://www.npmjs.com/package/testing-awe">
   <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg" height="60">
