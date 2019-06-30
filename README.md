@@ -1,8 +1,4 @@
----  
-
-![](https://gitlab.com/mus0007/prueba1/raw/master/Recursos/Logo+Cabecera.png)  
-
----
+![](https://gitlab.com/mus0007/prueba1/raw/master/Recursos/Logo+Cabecera.png)
 
 TestingAWE proporciona todo lo necesario para desarrollar nuestros tests de una forma rápida, simple y sencilla.
 
