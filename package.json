@@ -1,6 +1,6 @@
 {
     "name": "testing-awe",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -11,7 +11,10 @@
         "test": "mocha -r ts-node/register test/*.ts --timeout 1000000"
     },
     "keywords": [
-        "test"
+        "Test",
+        "Test structure",
+        "Automation",
+        "Test simplification"
     ],
     "author": "Mario Ubierna San Mamés",
     "license": "MIT",
