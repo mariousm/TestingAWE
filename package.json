@@ -1,6 +1,6 @@
 {
     "name": "testing-awe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "TestingAWE proporciona todo lo necesario para desarrollar nuestros tests de una forma rápida, simple y sencilla",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -8,7 +8,7 @@
         "init": "node init.js",
         "prepublish": "npm run build",
         "build": "tsc",
-        "test": "mocha -r ts-node/register test/*.ts --timeout 1000000"
+        "test": "mocha -r ts-node/register test/*.js --timeout 1000000"
     },
     "keywords": [
         "Test",
